@@ -6,18 +6,20 @@ public class Medication {
     private int dosage;
     private String unit;
     private String frequency;
-    private int times_a_day;
+    private int times_per_day;
     private String start_date;
+    private String current_amount;
     private String notes;
 
-    public Medication(String medication_id, String name, int dosage, String unit, String frequency, int times_a_day, String start_date, String notes) {
+    public Medication(String medication_id, String name, int dosage, String unit, String frequency, int times_per_day, String start_date, String current_amount, String notes) {
         this.medication_id = medication_id;
         this.name = name;
         this.dosage = dosage;
         this.unit = unit;
         this.frequency = frequency;
-        this.times_a_day = times_a_day;
+        this.times_per_day = times_per_day;
         this.start_date = start_date;
+        this.current_amount = current_amount;
         this.notes = notes;
     }
 
@@ -27,8 +29,9 @@ public class Medication {
     public int getDosage() {return dosage;}
     public String getUnit() {return unit;}
     public String getFrequency() {return frequency;}
-    public int getTimesADay() {return times_a_day;}
+    public int getTimesPerDay() {return times_per_day;}
     public String getStartDate() {return start_date;}
+    public String getCurrentAmount() {return current_amount;}
     public String getNotes() {return notes;}
     // setters
     public void setMedicationId(String medication_id) {this.medication_id = medication_id;}
@@ -36,7 +39,8 @@ public class Medication {
     public void setDosage(int dosage) {this.dosage = dosage;}
     public void setUnit(String unit) {this.unit = unit;}
     public void setFrequency(String frequency) {this.frequency = frequency;}
-    public void setTimesADay(int times_a_day) {this.times_a_day = times_a_day;}
+    public void setTimesPerDay(int times_a_day) {this.times_per_day = times_a_day;}
     public void setStartDate(String start_date) {this.start_date = start_date;}
+    public void setCurrentAmount(String current_amount) {this.current_amount = current_amount;}
     public void setNotes(String notes) {this.notes = notes;}
 }

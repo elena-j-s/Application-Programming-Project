@@ -1,3 +1,3 @@
-log_id,med_id,scheduled_time,taken_time,status
-101,1,2026-07-20T08:00,2026-07-20T08:05,taken
-102,1,2026-07-20T20:00,,missed
+log_id,med_id,scheduled_time,taken_time,dose_amount,status
+101,1,2026-07-20T08:00,2026-07-20T08:05,500 mg,taken
+102,1,2026-07-20T20:00,,,missed
