@@ -2,6 +2,10 @@ package edu.utsa.cs3443.mydosemate.model;
 
 /**
  * Base model for a person with contact information.
+ * <p>
+ * This class exposes read access to person data, while write access is limited
+ * to the model package so higher layers update user state through
+ * {@link UserManager}.
  */
 public abstract class Person {
 
@@ -18,7 +22,7 @@ public abstract class Person {
      * @param email the person's email address
      * @param phoneNumber the person's phone number
      */
-    public Person(String firstName, String lastName, String email, String phoneNumber) {
+    Person(String firstName, String lastName, String email, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -64,36 +68,48 @@ public abstract class Person {
     /**
      * Updates the person's first name.
      *
+     * <p>This setter is package-private so user data can only be mutated from
+     * within the model package, typically through {@link UserManager}.
+     *
      * @param firstName the new first name
      */
-    public void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     /**
      * Updates the person's last name.
      *
+     * <p>This setter is package-private so user data can only be mutated from
+     * within the model package, typically through {@link UserManager}.
+     *
      * @param lastName the new last name
      */
-    public void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
      * Updates the person's email address.
      *
+     * <p>This setter is package-private so user data can only be mutated from
+     * within the model package, typically through {@link UserManager}.
+     *
      * @param email the new email address
      */
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
     }
 
     /**
      * Updates the person's phone number.
      *
+     * <p>This setter is package-private so user data can only be mutated from
+     * within the model package, typically through {@link UserManager}.
+     *
      * @param phoneNumber the new phone number
      */
-    public void setPhoneNumber(String phoneNumber) {
+    void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -114,5 +130,14 @@ public abstract class Person {
     @Override
     public String toString() {
         return "First Name= " + firstName + ", Last Name= " + lastName + ", Email= " + email + ", Phone Number= " + phoneNumber;
+    }
+
+    /**
+     * Returns the person's fields as a CSV row.
+     *
+     * @return the person's data in {@code first,last,email,phone} order
+     */
+    public String personToCSV(){
+        return String.join(",", firstName, lastName, email, phoneNumber);
     }
 }
