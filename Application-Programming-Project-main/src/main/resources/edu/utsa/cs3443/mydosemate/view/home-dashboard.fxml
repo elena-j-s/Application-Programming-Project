@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.utsa.cs3443.mydosemate.controller.HomeScreenController"
+            prefHeight="400.0"
+            prefWidth="600.0">
+
+    <top>
+        <VBox spacing="3.0">
+
+            <padding>
+                <Insets top="12.0"
+                        right="18.0"
+                        bottom="8.0"
+                        left="18.0"/>
+            </padding>
+
+            <Label fx:id="welcomeLabel"
+                   text="My DoseMate"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <Label text="Today's medication schedule"
+                   style="-fx-font-size: 11px;"/>
+
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="8.0">
+
+            <BorderPane.margin>
+                <Insets right="18.0"
+                        left="18.0"/>
+            </BorderPane.margin>
+
+            <Label text="Scheduled Medications"
+                   style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+
+            <ListView fx:id="scheduledMedicationListView"
+                      VBox.vgrow="ALWAYS"
+                      placeholder="No medications are scheduled for today."/>
+
+            <HBox alignment="CENTER_RIGHT"
+                  spacing="8.0">
+
+                <Button text="Skip Selected"
+                        onAction="#handleSkipMedication"/>
+
+                <Button text="Take Selected"
+                        defaultButton="true"
+                        onAction="#handleTakeMedication"/>
+
+            </HBox>
+
+            <Label fx:id="messageLabel"
+                   minHeight="16.0"
+                   wrapText="true"
+                   style="-fx-font-size: 11px;"/>
+
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER"
+              spacing="10.0">
+
+            <padding>
+                <Insets top="9.0"
+                        right="12.0"
+                        bottom="12.0"
+                        left="12.0"/>
+            </padding>
+
+            <Button text="Add Medication"
+                    onAction="#handleOpenAddMedication"/>
+
+            <Button text="My Medications"
+                    onAction="#handleOpenMyMedications"/>
+
+            <Button text="History"
+                    onAction="#handleOpenHistory"/>
+
+            <Button text="Settings"
+                    onAction="#handleOpenSettings"/>
+
+        </HBox>
+    </bottom>
+
+</BorderPane>

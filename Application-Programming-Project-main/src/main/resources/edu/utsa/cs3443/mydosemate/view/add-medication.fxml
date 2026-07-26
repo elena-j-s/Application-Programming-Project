@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.utsa.cs3443.mydosemate.controller.AddMedicationController"
+            prefHeight="400.0"
+            prefWidth="600.0">
+
+    <top>
+        <VBox spacing="3.0">
+            <padding>
+                <Insets top="12.0"
+                        right="18.0"
+                        bottom="7.0"
+                        left="18.0"/>
+            </padding>
+
+            <Label text="Add Medication"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <Label text="Enter the medication details and schedule."
+                   style="-fx-font-size: 11px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER">
+
+            <content>
+                <GridPane hgap="12.0"
+                          vgap="8.0">
+
+                    <padding>
+                        <Insets top="8.0"
+                                right="18.0"
+                                bottom="8.0"
+                                left="18.0"/>
+                    </padding>
+
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="125.0"
+                                           halignment="RIGHT"/>
+
+                        <ColumnConstraints minWidth="390.0"
+                                           hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="Medication name:"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="0"/>
+
+                    <TextField fx:id="nameField"
+                               promptText="Example: Metformin"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="0"/>
+
+                    <Label text="Dosage:"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="1"/>
+
+                    <TextField fx:id="dosageField"
+                               promptText="Example: 500 or 2.5"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="1"/>
+
+                    <Label text="Dosage unit:"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="2"/>
+
+                    <ComboBox fx:id="unitComboBox"
+                              promptText="Select a unit"
+                              maxWidth="Infinity"
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="2"/>
+
+                    <Label text="Frequency:"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="3"/>
+
+                    <ComboBox fx:id="frequencyComboBox"
+                              promptText="Select a frequency"
+                              maxWidth="Infinity"
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="3"/>
+
+                    <Label text="Times per day:"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="4"/>
+
+                    <Spinner fx:id="timesPerDaySpinner"
+                             editable="true"
+                             maxWidth="Infinity"
+                             GridPane.columnIndex="1"
+                             GridPane.rowIndex="4"/>
+
+                    <Label text="Scheduled times:"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="5"/>
+
+                    <VBox spacing="2.0"
+                          GridPane.columnIndex="1"
+                          GridPane.rowIndex="5">
+
+                        <TextField fx:id="scheduledTimesField"
+                                   promptText="Example: 08:00;20:00"/>
+
+                        <Label text="Use HH:mm and separate multiple times with semicolons."
+                               style="-fx-font-size: 10px;"/>
+                    </VBox>
+
+                    <Label text="Actual start date:"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="6"/>
+
+                    <DatePicker fx:id="startDatePicker"
+                                maxWidth="Infinity"
+                                GridPane.columnIndex="1"
+                                GridPane.rowIndex="6"/>
+
+                    <Label text="Doses remaining:"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="7"/>
+
+                    <TextField fx:id="currentAmountField"
+                               promptText="Example: 30"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="7"/>
+
+                    <Label text="Notes:"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="8"/>
+
+                    <TextArea fx:id="notesArea"
+                              promptText="Optional instructions"
+                              prefRowCount="3"
+                              wrapText="true"
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="8"/>
+
+                </GridPane>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <VBox spacing="5.0">
+
+            <padding>
+                <Insets top="5.0"
+                        right="18.0"
+                        bottom="10.0"
+                        left="18.0"/>
+            </padding>
+
+            <Label fx:id="errorLabel"
+                   minHeight="16.0"
+                   wrapText="true"
+                   style="-fx-text-fill: #b00020; -fx-font-size: 11px;"/>
+
+            <HBox alignment="CENTER_RIGHT"
+                  spacing="8.0">
+
+                <Button text="Cancel"
+                        onAction="#handleCancel"/>
+
+                <Button text="Save Medication"
+                        defaultButton="true"
+                        onAction="#handleSaveMedication"/>
+
+            </HBox>
+        </VBox>
+    </bottom>
+
+</BorderPane>

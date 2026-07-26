@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.utsa.cs3443.mydosemate.controller.MyMedicationsController"
+            prefHeight="400.0"
+            prefWidth="600.0">
+
+    <top>
+        <HBox alignment="CENTER_LEFT"
+              spacing="12.0">
+
+            <padding>
+                <Insets top="12.0"
+                        right="15.0"
+                        bottom="8.0"
+                        left="15.0"/>
+            </padding>
+
+            <VBox HBox.hgrow="ALWAYS"
+                  spacing="2.0">
+
+                <Label text="My Medications"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+                <Label text="View and manage all saved medications."
+                       style="-fx-font-size: 11px;"/>
+            </VBox>
+
+            <Button text="Add Medication"
+                    onAction="#handleAddMedication"/>
+
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="medicationTable"
+                   placeholder="No medications have been added yet.">
+
+            <BorderPane.margin>
+                <Insets right="15.0"
+                        left="15.0"/>
+            </BorderPane.margin>
+
+            <columns>
+                <TableColumn fx:id="nameColumn"
+                             text="Name"
+                             prefWidth="110.0"/>
+
+                <TableColumn fx:id="dosageColumn"
+                             text="Dose"
+                             prefWidth="65.0"/>
+
+                <TableColumn fx:id="unitColumn"
+                             text="Unit"
+                             prefWidth="55.0"/>
+
+                <TableColumn fx:id="frequencyColumn"
+                             text="Frequency"
+                             prefWidth="85.0"/>
+
+                <TableColumn fx:id="timesColumn"
+                             text="Scheduled Times"
+                             prefWidth="125.0"/>
+
+                <TableColumn fx:id="startDateColumn"
+                             text="Start Date"
+                             prefWidth="90.0"/>
+
+                <TableColumn fx:id="amountColumn"
+                             text="Doses Left"
+                             prefWidth="80.0"/>
+
+                <TableColumn fx:id="notesColumn"
+                             text="Notes"
+                             prefWidth="150.0"/>
+            </columns>
+
+        </TableView>
+    </center>
+
+    <bottom>
+        <VBox spacing="5.0">
+
+            <padding>
+                <Insets top="7.0"
+                        right="15.0"
+                        bottom="10.0"
+                        left="15.0"/>
+            </padding>
+
+            <Label fx:id="messageLabel"
+                   minHeight="16.0"
+                   wrapText="true"
+                   style="-fx-font-size: 11px;"/>
+
+            <HBox alignment="CENTER_RIGHT"
+                  spacing="8.0">
+
+                <Button text="Back"
+                        onAction="#handleBackToDashboard"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="Refresh"
+                        onAction="#handleRefresh"/>
+
+                <Button text="Edit Selected"
+                        onAction="#handleEditMedication"/>
+
+                <Button text="Delete Selected"
+                        onAction="#handleDeleteMedication"/>
+
+            </HBox>
+        </VBox>
+    </bottom>
+
+</BorderPane>
