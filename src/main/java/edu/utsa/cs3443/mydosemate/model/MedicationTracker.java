@@ -21,9 +21,18 @@ public class MedicationTracker {
     private static final String CSV_HEADER = "med_id,name,dosage,unit,frequency,times_per_day," + "scheduled_times,start_date,current_amount,notes";
     private static final int EXPECTED_COLUMN_COUNT = 10;
     private final ArrayList<Medication> medications;
+    private final History history;
 
     public MedicationTracker() {
+
         medications = new ArrayList<Medication>();
+        history = new History();
+        try {
+            loadMedications();
+            this.history.loadDoseLogs();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
     public void loadMedications() throws IOException {
@@ -365,5 +374,9 @@ public class MedicationTracker {
 
     private boolean isNullOrBlank(String value) {
         return value == null || value.trim().isEmpty();
+    }
+
+    public History getHistory() {
+        return history;
     }
 }
