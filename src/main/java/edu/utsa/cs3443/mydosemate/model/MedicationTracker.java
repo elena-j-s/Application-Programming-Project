@@ -9,7 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.DateTimeException;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -217,11 +219,100 @@ public class MedicationTracker {
             throw exception;
         }
 
+        DoseLog doseLog = buildDoseLog(medication, "taken", LocalDateTime.now());
+
+        try {
+            history.appendDoseLog(doseLog);
+        } catch (IOException exception) {
+            medication.setCurrentAmount(previousAmount);
+            saveMedications();
+            throw exception;
+        }
+
         return true;
     }
 
-    public boolean skipMedication(int medication_id) {
-        return getMedicationById(medication_id) != null;
+    public boolean skipMedication(int medication_id) throws IOException {
+        Medication medication = getMedicationById(medication_id);
+
+        if (medication == null) {
+            return false;
+        }
+
+        DoseLog doseLog = buildDoseLog(medication, "skipped", null);
+        history.appendDoseLog(doseLog);
+
+        return true;
+    }
+
+    /**
+     * Builds a dose log entry for the given medication, matching it to whichever
+     * of the medication's scheduled times-of-day is closest to right now.
+     *
+     * @param medication the medication the dose belongs to
+     * @param status the dose status (e.g. {@code "taken"}, {@code "skipped"})
+     * @param takenAt the moment the dose was actually taken, or {@code null} if
+     *                it was not taken (e.g. skipped or missed)
+     * @return a new, not-yet-persisted {@link DoseLog}
+     */
+    private DoseLog buildDoseLog(Medication medication, String status, LocalDateTime takenAt) {
+        LocalDateTime scheduledDateTime = LocalDateTime.of(
+                LocalDate.now(), closestScheduledTime(medication));
+
+        String scheduledTime = scheduledDateTime.toString();
+        String takenTime = takenAt == null ? "" : takenAt.toString();
+        String doseAmount = formatDosageAmount(medication.getDosage()) + " " + medication.getUnit();
+
+        return new DoseLog(
+                history.getDoseLogId(),
+                medication.getMedicationId(),
+                scheduledTime,
+                takenTime,
+                doseAmount,
+                status);
+    }
+
+    /**
+     * Finds the medication's scheduled time-of-day closest to the current time,
+     * so a dose taken or skipped "now" gets matched to the right slot even if
+     * it's a little early or late.
+     *
+     * @param medication the medication whose scheduled times to search
+     * @return the closest scheduled {@link LocalTime}
+     */
+    private LocalTime closestScheduledTime(Medication medication) {
+        LocalTime now = LocalTime.now();
+        String[] scheduledTimes = medication.getScheduledTimes().split(";", -1);
+
+        LocalTime closestTime = null;
+        long smallestDifferenceMinutes = Long.MAX_VALUE;
+
+        for (String scheduledTimeText : scheduledTimes) {
+            LocalTime scheduledTime = LocalTime.parse(scheduledTimeText.trim());
+            long differenceMinutes = Math.abs(Duration.between(now, scheduledTime).toMinutes());
+
+            if (differenceMinutes < smallestDifferenceMinutes) {
+                smallestDifferenceMinutes = differenceMinutes;
+                closestTime = scheduledTime;
+            }
+        }
+
+        return closestTime;
+    }
+
+    /**
+     * Formats a dosage without a trailing {@code .0} for whole numbers, matching
+     * how {@link Medication} formats its own dosage for display and CSV rows.
+     *
+     * @param dosage the dosage amount
+     * @return the formatted dosage
+     */
+    private String formatDosageAmount(double dosage) {
+        if (dosage == Math.rint(dosage)) {
+            return String.valueOf((long) dosage);
+        }
+
+        return String.valueOf(dosage);
     }
 
     private Medication parseMedicationRow(String row, int lineNumber)
