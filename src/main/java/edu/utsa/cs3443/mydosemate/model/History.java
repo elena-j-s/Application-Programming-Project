@@ -13,6 +13,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Stores and manages dose history entries for medications.
+ * <p>
+ * This class loads, saves, appends, and filters {@link DoseLog} records using
+ * an in-memory list backed by a CSV file.
+ */
 public class History {
 
     private static final Path DATA_DIR = Paths.get("data");
@@ -21,14 +27,28 @@ public class History {
     private static final int EXPECTED_COLUMN_COUNT = 6;
     private final ArrayList<DoseLog> doseLogs;
 
+    /**
+     * Creates an empty history store.
+     */
     public History() {
         doseLogs = new ArrayList<DoseLog>();
     }
 
+    /**
+     * Loads dose logs from the default dose log CSV file.
+     *
+     * @throws IOException if the file cannot be read or parsed
+     */
     public void loadDoseLogs() throws IOException {
         loadDoseLogs(DOSE_LOG_FILE);
     }
 
+    /**
+     * Loads dose logs from the specified CSV file.
+     *
+     * @param dose_log_csv the dose log CSV file to load
+     * @throws IOException if the file is missing, empty, malformed, or contains invalid data
+     */
     public void loadDoseLogs(Path dose_log_csv) throws IOException {
         if (dose_log_csv == null) {
             throw new IllegalArgumentException("Dose log file path cannot be null");
@@ -70,10 +90,20 @@ public class History {
         doseLogs.addAll(loadedDoseLogs);
     }
 
+    /**
+     * Adds a dose log entry to the in-memory history.
+     *
+     * @param doseLog the dose log to add
+     */
     public void addDoseLog(DoseLog doseLog) {
         doseLogs.add(doseLog);
     }
 
+    /**
+     * Returns a copy of all dose logs currently stored in memory.
+     *
+     * @return a list containing all dose logs
+     */
     public List<DoseLog> getDoseLogs() {
         return new ArrayList<DoseLog>(doseLogs);
     }
@@ -211,6 +241,14 @@ public class History {
         return matchingLogs;
     }
 
+    /**
+     * Parses a single dose log CSV row into a {@link DoseLog} instance.
+     *
+     * @param row the CSV row text
+     * @param lineNumber the source line number, used for error reporting
+     * @return the parsed dose log
+     * @throws IOException if the row cannot be parsed or contains invalid data
+     */
     private DoseLog parseDoseLogRow(String row, int lineNumber) throws IOException {
         try {
             String[] fields = parseCsvFields(row);
@@ -234,6 +272,13 @@ public class History {
         }
     }
 
+    /**
+     * Splits a CSV row into fields while respecting quoted values and escaped quotes.
+     *
+     * @param row the raw CSV row
+     * @return the parsed fields
+     * @throws IllegalArgumentException if the row contains an unclosed quotation mark
+     */
     private String[] parseCsvFields(String row) {
         ArrayList<String> fields = new ArrayList<String>();
         StringBuilder currentField = new StringBuilder();
@@ -265,6 +310,11 @@ public class History {
         return fields.toArray(new String[fields.size()]);
     }
 
+    /**
+     * Generates a new dose log ID based on the current number of stored logs.
+     *
+     * @return the next dose log ID value
+     */
     public int getDoseLogId() {
         return doseLogs.size() + 100;
     }

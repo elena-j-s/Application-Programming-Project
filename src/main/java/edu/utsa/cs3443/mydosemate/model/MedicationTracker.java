@@ -16,6 +16,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages the application's medication list and associated dose history.
+ * <p>
+ * This class is responsible for loading and saving medications from CSV,
+ * adding, updating, removing medications, and recording take/skip actions.
+ */
 public class MedicationTracker {
 
     private static final Path DATA_DIR = Paths.get("data");
@@ -25,6 +31,10 @@ public class MedicationTracker {
     private final ArrayList<Medication> medications;
     private final History history;
 
+    /**
+     * Creates a new medication tracker and attempts to load stored medications
+     * and dose history from disk.
+     */
     public MedicationTracker() {
 
         medications = new ArrayList<Medication>();
@@ -37,10 +47,21 @@ public class MedicationTracker {
         }
     }
 
+    /**
+     * Loads medications from the default medication CSV file.
+     *
+     * @throws IOException if the medication file cannot be read or parsed
+     */
     public void loadMedications() throws IOException {
         loadMedications(MEDICATION_FILE);
     }
 
+    /**
+     * Loads medications from the specified CSV file.
+     *
+     * @param medications_csv the medication CSV file to load
+     * @throws IOException if the file is missing, empty, malformed, or contains invalid data
+     */
     public void loadMedications(Path medications_csv) throws IOException{
         if (medications_csv == null) {
             throw new IllegalArgumentException("Medication file path cannot be null");
@@ -87,10 +108,21 @@ public class MedicationTracker {
         medications.addAll(loadedMedications);
     }
 
+    /**
+     * Saves medications to the default medication CSV file.
+     *
+     * @throws IOException if the file cannot be written
+     */
     public void saveMedications() throws IOException {
         saveMedications(MEDICATION_FILE);
     }
 
+    /**
+     * Saves medications to the specified CSV file.
+     *
+     * @param medications_csv the destination CSV file
+     * @throws IOException if the file cannot be written
+     */
     public void saveMedications(Path medications_csv) throws IOException {
         if (medications_csv == null) {
             throw new IllegalArgumentException("Medication file path cannot be null");
@@ -118,6 +150,12 @@ public class MedicationTracker {
         }
     }
 
+    /**
+     * Adds a new medication to the tracker and persists the updated list.
+     *
+     * @param medication the medication to add
+     * @throws IOException if saving the updated medication list fails
+     */
     public void addMedication(Medication medication) throws IOException {
         validateMedication(medication);
 
@@ -135,6 +173,13 @@ public class MedicationTracker {
         }
     }
 
+    /**
+     * Removes a medication by its ID and persists the updated list.
+     *
+     * @param medication_id the ID of the medication to remove
+     * @return {@code true} if the medication was removed; {@code false} if no medication matched the ID
+     * @throws IOException if saving the updated medication list fails
+     */
     public boolean removeMedication(int medication_id) throws IOException {
         int medicationIndex = findMedicationIndexById(medication_id);
 
@@ -154,6 +199,13 @@ public class MedicationTracker {
         return true;
     }
 
+    /**
+     * Replaces an existing medication with updated values and persists the changes.
+     *
+     * @param updated_medication the updated medication
+     * @return {@code true} if the medication was found and updated; {@code false} otherwise
+     * @throws IOException if saving the updated medication list fails
+     */
     public boolean updateMedication(Medication updated_medication) throws IOException {
         validateMedication(updated_medication);
 
@@ -176,6 +228,12 @@ public class MedicationTracker {
         return true;
     }
 
+    /**
+     * Retrieves a medication by its ID.
+     *
+     * @param medication_id the medication ID to search for
+     * @return the matching medication, or {@code null} if no match exists
+     */
     public Medication getMedicationById(int medication_id) {
         int medicationIndex = findMedicationIndexById(medication_id);
 
@@ -186,6 +244,11 @@ public class MedicationTracker {
         return medications.get(medicationIndex);
     }
 
+    /**
+     * Generates the next available medication ID.
+     *
+     * @return an ID value one greater than the current highest medication ID
+     */
     public int generateNextMedicationId() {
         int largestId = 0;
 
@@ -198,10 +261,23 @@ public class MedicationTracker {
         return largestId + 1;
     }
 
+    /**
+     * Returns a copy of the current medication list.
+     *
+     * @return a new list containing all tracked medications
+     */
     public List<Medication> getMedications() {
         return new ArrayList<Medication>(medications);
     }
 
+    /**
+     * Marks a medication as taken, updates the stored amount, saves the change,
+     * and records the dose in history.
+     *
+     * @param medication_id the ID of the medication to take
+     * @return {@code true} if the medication was taken; {@code false} if the medication does not exist or has no remaining amount
+     * @throws IOException if saving the medication update or writing the dose log fails
+     */
     public boolean takeMedication(int medication_id) throws IOException {
         Medication medication = getMedicationById(medication_id);
 
@@ -232,6 +308,13 @@ public class MedicationTracker {
         return true;
     }
 
+    /**
+     * Marks a medication as skipped and records the event in history.
+     *
+     * @param medication_id the ID of the medication to skip
+     * @return {@code true} if the medication exists; {@code false} otherwise
+     * @throws IOException if writing the dose log fails
+     */
     public boolean skipMedication(int medication_id) throws IOException {
         Medication medication = getMedicationById(medication_id);
 
@@ -315,6 +398,14 @@ public class MedicationTracker {
         return String.valueOf(dosage);
     }
 
+    /**
+     * Parses a single medication CSV row into a {@link Medication} instance.
+     *
+     * @param row the CSV row text
+     * @param lineNumber the source line number, used for error reporting
+     * @return the parsed medication
+     * @throws IOException if the row cannot be parsed or contains invalid data
+     */
     private Medication parseMedicationRow(String row, int lineNumber)
             throws IOException {
         try {
@@ -346,6 +437,13 @@ public class MedicationTracker {
         }
     }
 
+    /**
+     * Validates that a medication contains all required values and that each
+     * value is in the expected format or range.
+     *
+     * @param medication the medication to validate
+     * @throws IllegalArgumentException if any field is missing, malformed, or out of range
+     */
     private void validateMedication(Medication medication) {
         if (medication == null) {
             throw new IllegalArgumentException("Medication cannot be null");
@@ -392,6 +490,13 @@ public class MedicationTracker {
         }
     }
 
+    /**
+     * Validates the scheduled time list for a medication.
+     *
+     * @param scheduledTimes the semicolon-separated scheduled times
+     * @param timesPerDay the expected number of scheduled times
+     * @throws IllegalArgumentException if the scheduled times are blank, the count does not match, or a time is malformed
+     */
     private void validateScheduledTimes(String scheduledTimes, int timesPerDay) {
         if (isNullOrBlank(scheduledTimes)) {
             throw new IllegalArgumentException("Scheduled times cannot be blank");
@@ -412,6 +517,12 @@ public class MedicationTracker {
         }
     }
 
+    /**
+     * Finds the index of a medication in the internal list by ID.
+     *
+     * @param medicationId the medication ID to search for
+     * @return the medication index, or {@code -1} if no match is found
+     */
     private int findMedicationIndexById(int medicationId) {
         for (int index = 0; index < medications.size(); index++) {
             if (medications.get(index).getMedicationId() == medicationId) {
@@ -422,6 +533,13 @@ public class MedicationTracker {
         return -1;
     }
 
+    /**
+     * Splits a CSV row into fields while respecting quoted values and escaped quotes.
+     *
+     * @param row the raw CSV row
+     * @return the parsed fields
+     * @throws IllegalArgumentException if the row contains an unclosed quotation mark
+     */
     private String[] parseCsvFields(String row) {
         ArrayList<String> fields = new ArrayList<String>();
         StringBuilder currentField = new StringBuilder();
@@ -453,6 +571,13 @@ public class MedicationTracker {
         return fields.toArray(new String[fields.size()]);
     }
 
+    /**
+     * Checks whether a medication list already contains a medication with the given ID.
+     *
+     * @param medicationList the medication list to inspect
+     * @param medicationId the medication ID to search for
+     * @return {@code true} if the ID exists in the list; {@code false} otherwise
+     */
     private boolean containsMedicationId(List<Medication> medicationList, int medicationId) {
         for (Medication medication : medicationList) {
             if (medication.getMedicationId() == medicationId) {
@@ -463,10 +588,21 @@ public class MedicationTracker {
         return false;
     }
 
+    /**
+     * Checks whether a string is {@code null}, empty, or contains only whitespace.
+     *
+     * @param value the string to check
+     * @return {@code true} if the value is null or blank; {@code false} otherwise
+     */
     private boolean isNullOrBlank(String value) {
         return value == null || value.trim().isEmpty();
     }
 
+    /**
+     * Returns the history object used to store dose logs.
+     *
+     * @return the medication dose history
+     */
     public History getHistory() {
         return history;
     }
