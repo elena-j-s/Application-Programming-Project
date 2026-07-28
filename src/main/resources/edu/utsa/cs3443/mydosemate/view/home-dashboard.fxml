@@ -31,15 +31,15 @@
                <children>
                   <VBox>
                      <children>
-                        <Label fx:id="dateLabel" prefHeight="36.0" prefWidth="143.0">
+                        <Label fx:id="dateLabel" prefHeight="36.0" prefWidth="372.0">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="30.0" />
+                              <Font name="Arial Rounded MT Bold" size="20.0" />
                            </font>
                            <VBox.margin>
                               <Insets left="10.0" top="60.0" />
                            </VBox.margin>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="194.0" text="Hello, !">
+                        <Label fx:id="greetingLabel" prefHeight="44.0" prefWidth="451.0">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="35.0" />
                            </font>
@@ -78,7 +78,7 @@
                               <Insets right="12.0" />
                            </StackPane.margin>
                         </Rectangle>
-                        <ProgressIndicator maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="175.0" progress="0.0">
+                        <ProgressIndicator fx:id="progressIndicator" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="175.0" progress="0.0">
                            <StackPane.margin>
                               <Insets right="300.0" />
                            </StackPane.margin>
@@ -170,7 +170,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <Button fx:id="addMedicineButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="59.0" prefWidth="63.0" styleClass="primary-button" stylesheets="@style.css" text="+">
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addMedication" prefHeight="59.0" prefWidth="63.0" styleClass="primary-button" stylesheets="@style.css" text="+">
                      <VBox.margin>
                         <Insets left="480.0" top="10.0" />
                      </VBox.margin>
@@ -184,7 +184,7 @@
          <bottom>
             <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="homeDashboardButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="79.0" prefWidth="150.0" styleClass="primary-button" stylesheets="@style.css" text="Home">
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goToDash" prefHeight="79.0" prefWidth="150.0" styleClass="primary-button" stylesheets="@style.css" text="Home">
                      <HBox.margin>
                         <Insets left="30.0" top="10.0" />
                      </HBox.margin>
@@ -192,7 +192,7 @@
                         <Font name="Arial Rounded MT Bold" size="30.0" />
                      </font>
                   </Button>
-                  <Button fx:id="medButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="79.0" prefWidth="150.0" style="-fx-font-size: 26;" styleClass="primary-button" stylesheets="@style.css" text="Medicine">
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goToMedicine" prefHeight="79.0" prefWidth="150.0" style="-fx-font-size: 26;" styleClass="primary-button" stylesheets="@style.css" text="Medicine">
                      <font>
                         <Font size="30.0" />
                      </font>
@@ -200,7 +200,7 @@
                         <Insets left="20.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="historyButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="79.0" prefWidth="150.0" style="-fx-font-size: 30;" styleClass="primary-button" stylesheets="@style.css" text="History">
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goToHistory" prefHeight="79.0" prefWidth="150.0" style="-fx-font-size: 30;" styleClass="primary-button" stylesheets="@style.css" text="History">
                      <font>
                         <Font size="25.0" />
                      </font>
