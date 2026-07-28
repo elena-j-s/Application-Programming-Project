@@ -1,0 +1,15 @@
+.primary-button {
+    -fx-background-color: #4A61AF;
+    -fx-background-radius: 270;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 31px;
+}
+
+.primary-button:hover {
+    -fx-background-color: #6178C7;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #35498F;
+}

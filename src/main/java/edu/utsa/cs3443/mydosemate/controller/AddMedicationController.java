@@ -47,21 +47,6 @@ public class AddMedicationController {
     @FXML
     public void saveMedication(ActionEvent event) {
 
-        Medication medication = new Medication(
-                medicationIdField.getText(),
-                nameField.getText(),
-                Integer.parseInt(dosageField.getText()),
-                unitField.getText(),
-                frequencyField.getText(),
-                Integer.parseInt(timesPerDayField.getText()),
-                startDateField.getText(),
-                currentAmountField.getText(),
-                notesField.getText()
-        );
-
-        medicationTracker.addMedication(medication);
-
-        System.out.println("Medication added: " + medication.getName());
     }
 
     @FXML

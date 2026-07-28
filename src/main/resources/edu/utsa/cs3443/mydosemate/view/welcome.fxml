@@ -1,16 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <!--- My DoseMate Welcome Page with Single Log In button -->
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.utsa.cs3443.mydosemate.controller.WelcomeController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="840.0" prefWidth="550.0" style="-fx-background-color: #5B85EB;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.mydosemate.controller.WelcomeController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="840.0" prefWidth="550.0">
+         <children>
+            <ImageView fitHeight="356.0" fitWidth="434.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/MyDoseMateLogo.png" />
+               </image>
+            </ImageView>
+            <Label text="MyDoseMate" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="75.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <Button mnemonicParsing="false" onAction="#getStartedClicked" prefHeight="64.0" prefWidth="264.0" styleClass="primary-button" stylesheets="@style.css" text="Get Started" textFill="WHITE">
+               <VBox.margin>
+                  <Insets top="100.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="31.0" />
+               </font>
+               <effect>
+                  <DropShadow offsetY="2.0" />
+               </effect>
+            </Button>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+   </children>
 </AnchorPane>

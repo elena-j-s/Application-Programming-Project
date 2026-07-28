@@ -1,15 +1,216 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="840.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.mydosemate.controller.HomeScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="550.0" style="-fx-background-color: #A7C8EE;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.mydosemate.controller.HomeScreenController">
    <children>
-      <VBox prefHeight="841.0" prefWidth="602.0">
-         <children>
-            <BorderPane prefHeight="464.0" prefWidth="602.0" />
-         </children>
-      </VBox>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="140.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="550.0">
+         <effect>
+            <DropShadow blurType="ONE_PASS_BOX" offsetY="2.0">
+               <color>
+                  <Color red="0.31578946113586426" green="0.30994153022766113" blue="0.30994153022766113" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Rectangle>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="550.0" BorderPane.alignment="TOP_LEFT">
+               <children>
+                  <VBox>
+                     <children>
+                        <Label fx:id="dateLabel" prefHeight="36.0" prefWidth="143.0">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="30.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" top="60.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="194.0" text="Hello, !">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="35.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="598.0" prefWidth="550.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <children>
+                  <StackPane prefHeight="250.0" prefWidth="430.0">
+                     <VBox.margin>
+                        <Insets left="9.0" top="15.0" />
+                     </VBox.margin>
+                     <children>
+                        <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="250.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="530.0">
+                           <effect>
+                              <DropShadow blurType="ONE_PASS_BOX" offsetY="2.0">
+                                 <color>
+                                    <Color red="0.31578946113586426" green="0.30994153022766113" blue="0.30994153022766113" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                           <StackPane.margin>
+                              <Insets right="12.0" />
+                           </StackPane.margin>
+                        </Rectangle>
+                        <ProgressIndicator maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="175.0" progress="0.0">
+                           <StackPane.margin>
+                              <Insets right="300.0" />
+                           </StackPane.margin>
+                        </ProgressIndicator>
+                        <Label prefHeight="17.0" prefWidth="167.0" text="TODAY'S PROGRESS" textFill="#6b6b6b">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="15.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets bottom="210.0" right="350.0" />
+                           </StackPane.margin>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="41.0" prefWidth="102.0" text="Taken" textFill="#17b915">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="30.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets bottom="100.0" left="140.0" />
+                           </StackPane.margin>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="41.0" prefWidth="108.0" text="Missed" textFill="#d30c0c">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="30.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets left="150.0" />
+                           </StackPane.margin>
+                        </Label>
+                        <Label fx:id="missedDataLabel" alignment="CENTER" prefHeight="41.0" prefWidth="33.0" text="0" textFill="#d30c0c">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="30.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets left="451.0" />
+                           </StackPane.margin>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="41.0" prefWidth="157.0" text="Upcoming" textFill="#a7c8ee">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="30.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets left="200.0" top="95.0" />
+                           </StackPane.margin>
+                        </Label>
+                        <Label fx:id="takenDataLabel" alignment="CENTER" prefHeight="41.0" prefWidth="38.0" text="0" textFill="#17b915">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="30.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets bottom="100.0" left="450.0" />
+                           </StackPane.margin>
+                        </Label>
+                        <Label fx:id="upcomingDataLabel" alignment="CENTER" prefHeight="41.0" prefWidth="31.0" text="0" textFill="#a7c8ee">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="30.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets left="450.0" top="95.0" />
+                           </StackPane.margin>
+                        </Label>
+                     </children>
+                  </StackPane>
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="530.0">
+                     <VBox.margin>
+                        <Insets left="9.0" top="15.0" />
+                     </VBox.margin>
+                     <children>
+                        <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="250.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="530.0">
+                           <effect>
+                              <DropShadow blurType="ONE_PASS_BOX" offsetY="2.0">
+                                 <color>
+                                    <Color red="0.31578946113586426" green="0.30994153022766113" blue="0.30994153022766113" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Rectangle>
+                        <Label text="UPCOMING DOSES" textFill="#6b6b6b">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="15.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets bottom="210.0" right="350.0" />
+                           </StackPane.margin>
+                        </Label>
+                        <Label fx:id="noDosesLabel" textFill="#6b6b6b">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+                  <Button fx:id="addMedicineButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="59.0" prefWidth="63.0" styleClass="primary-button" stylesheets="@style.css" text="+">
+                     <VBox.margin>
+                        <Insets left="480.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="50.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </center>
+         <bottom>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="homeDashboardButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="79.0" prefWidth="150.0" styleClass="primary-button" stylesheets="@style.css" text="Home">
+                     <HBox.margin>
+                        <Insets left="30.0" top="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="30.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="medButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="79.0" prefWidth="150.0" style="-fx-font-size: 26;" styleClass="primary-button" stylesheets="@style.css" text="Medicine">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="historyButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="79.0" prefWidth="150.0" style="-fx-font-size: 30;" styleClass="primary-button" stylesheets="@style.css" text="History">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </bottom>
+      </BorderPane>
    </children>
 </AnchorPane>
