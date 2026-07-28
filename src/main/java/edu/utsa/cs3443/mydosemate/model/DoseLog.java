@@ -1,5 +1,9 @@
 package edu.utsa.cs3443.mydosemate.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+
 public class DoseLog {
     private int log_id;
     private int med_id;
@@ -31,6 +35,61 @@ public class DoseLog {
     public void setTakenTime(String taken_time) {this.taken_time = taken_time;}
     public void setDoseAmount(String dose_amount) {this.dose_amount = dose_amount;}
     public void setStatus(String status) {this.status = status;}
+
+    /**
+     * Parses {@code scheduled_time} as a full timestamp.
+     * <p>
+     * Stored as an ISO-8601 string (e.g. {@code 2026-07-28T08:00}) combining the
+     * calendar date the dose was due with its scheduled time-of-day, so history
+     * can be sorted and filtered by day.
+     *
+     * @return the scheduled timestamp, or {@code null} if it cannot be parsed
+     */
+    public LocalDateTime getScheduledDateTime() {
+        return parseDateTime(scheduled_time);
+    }
+
+    /**
+     * Parses {@code taken_time} as a full timestamp.
+     *
+     * @return the timestamp the dose was actually taken, or {@code null} if the
+     *         dose was never taken (or the value cannot be parsed)
+     */
+    public LocalDateTime getTakenDateTime() {
+        return parseDateTime(taken_time);
+    }
+
+    /**
+     * Returns the calendar date this dose log entry belongs to, based on
+     * {@code scheduled_time}.
+     *
+     * @return the scheduled date, or {@code null} if it cannot be parsed
+     */
+    public LocalDate getScheduledDate() {
+        LocalDateTime scheduledDateTime = getScheduledDateTime();
+        return scheduledDateTime == null ? null : scheduledDateTime.toLocalDate();
+    }
+
+    /**
+     * Returns whether this dose was actually taken (as opposed to skipped or missed).
+     *
+     * @return {@code true} if {@code taken_time} holds a valid timestamp
+     */
+    public boolean isTaken() {
+        return getTakenDateTime() != null;
+    }
+
+    private LocalDateTime parseDateTime(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+
+        try {
+            return LocalDateTime.parse(value.trim());
+        } catch (DateTimeParseException exception) {
+            return null;
+        }
+    }
 
     @Override
     public String toString() {
