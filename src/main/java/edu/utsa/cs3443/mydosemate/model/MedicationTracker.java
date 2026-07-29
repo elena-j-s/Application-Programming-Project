@@ -13,8 +13,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Manages the application's medication list and associated dose history.
@@ -605,5 +608,108 @@ public class MedicationTracker {
      */
     public History getHistory() {
         return history;
+    }
+
+    /**
+     * Returns today's progress report as an array of doubles where
+     * the first element is the number of doses taken, the second is the number of doses missed,
+     * the third is the number of doses upcoming, and the fourth is the progress as a percentage.
+     * @return the progress report
+     */
+    public int[] getProgressReport() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
+        int taken = 0;
+        int missed = 0;
+        int upcoming = 0;
+
+        Map<String, DoseLog> todaysLogsBySlot = new HashMap<String, DoseLog>();
+        for (DoseLog doseLog : history.getDoseLogsForDate(today)) {
+            todaysLogsBySlot.put(buildDoseSlotKey(doseLog.getMedId(), doseLog.getScheduledDateTime()), doseLog);
+        }
+
+        for (Medication medication : medications) {
+            if (!isMedicationDueToday(medication, today)) {
+                continue;
+            }
+
+            String[] scheduledTimes = medication.getScheduledTimes().split(";", -1);
+            for (String scheduledTimeText : scheduledTimes) {
+                LocalTime scheduledTime = LocalTime.parse(scheduledTimeText.trim());
+                LocalDateTime scheduledDateTime = LocalDateTime.of(today, scheduledTime);
+                DoseLog doseLog = todaysLogsBySlot.get(buildDoseSlotKey(medication.getMedicationId(), scheduledDateTime));
+
+                if (doseLog != null) {
+                    if ("taken".equalsIgnoreCase(doseLog.getStatus())) {
+                        taken++;
+                    } else {
+                        missed++;
+                    }
+                } else if (scheduledDateTime.isAfter(now)) {
+                    upcoming++;
+                } else {
+                    missed++;
+                }
+            }
+        }
+
+        int totalDoses = taken + missed + upcoming;
+        int progress = totalDoses == 0 ? 0 : (int) ((taken / (double) totalDoses) * 100.0);
+        return new int[]{taken, missed, upcoming, progress};
+    }
+
+    /**
+     * Returns whether the medication should be counted in today's report.
+     *
+     * @param medication the medication to inspect
+     * @param date the date to evaluate
+     * @return {@code true} if the medication is active on the given date
+     */
+    private boolean isMedicationDueToday(Medication medication, LocalDate date) {
+        if (medication == null || date == null) {
+            return false;
+        }
+
+        LocalDate startDate;
+        try {
+            startDate = LocalDate.parse(medication.getStartDate().trim());
+        } catch (Exception exception) {
+            return false;
+        }
+
+        if (date.isBefore(startDate)) {
+            return false;
+        }
+
+        String frequency = medication.getFrequency().trim().toLowerCase();
+
+        if (frequency.contains("daily")) {
+            return true;
+        }
+
+        if (frequency.contains("weekly")) {
+            return ChronoUnit.DAYS.between(startDate, date) % 7 == 0;
+        }
+
+        if (frequency.contains("monthly")) {
+            return startDate.getDayOfMonth() == date.getDayOfMonth();
+        }
+
+        if (frequency.contains("year")) {
+            return startDate.getMonth() == date.getMonth() && startDate.getDayOfMonth() == date.getDayOfMonth();
+        }
+
+        return true;
+    }
+
+    /**
+     * Builds a stable lookup key for a medication dose slot.
+     *
+     * @param medicationId the medication ID
+     * @param scheduledDateTime the scheduled date and time
+     * @return the lookup key
+     */
+    private String buildDoseSlotKey(int medicationId, LocalDateTime scheduledDateTime) {
+        return medicationId + "|" + scheduledDateTime;
     }
 }

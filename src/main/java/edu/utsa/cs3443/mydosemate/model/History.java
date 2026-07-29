@@ -219,6 +219,29 @@ public class History {
     }
 
     /**
+     * Returns all dose logs recorded for a given medication on a given date.
+     *
+     * @param medication_id the medication ID to filter by
+     * @param date the calendar date to filter by
+     * @return the matching dose logs
+     */
+    public List<DoseLog> getDoseLogsForMedicationOnDate(int medication_id, LocalDate date) {
+        ArrayList<DoseLog> matchingLogs = new ArrayList<DoseLog>();
+
+        if (date == null) {
+            return matchingLogs;
+        }
+
+        for (DoseLog doseLog : doseLogs) {
+            if (doseLog.getMedId() == medication_id && date.equals(doseLog.getScheduledDate())) {
+                matchingLogs.add(doseLog);
+            }
+        }
+
+        return matchingLogs;
+    }
+
+    /**
      * Returns all dose logs scheduled for a given calendar date, based on each
      * entry's {@code scheduled_time}.
      *
@@ -239,6 +262,44 @@ public class History {
         }
 
         return matchingLogs;
+    }
+
+    /**
+     * Returns the number of dose logs scheduled on a given date whose status indicates the dose was taken.
+     *
+     * @param date the date to inspect
+     * @return the number of taken doses for that date
+     */
+    public int getTakenCountForDate(LocalDate date) {
+        int takenCount = 0;
+
+        for (DoseLog doseLog : getDoseLogsForDate(date)) {
+            if ("taken".equalsIgnoreCase(doseLog.getStatus())) {
+                takenCount++;
+            }
+        }
+
+        return takenCount;
+    }
+
+    /**
+     * Returns the number of dose logs scheduled on a given date whose status indicates the dose was missed or skipped.
+     *
+     * @param date the date to inspect
+     * @return the number of missed doses for that date
+     */
+    public int getMissedCountForDate(LocalDate date) {
+        int missedCount = 0;
+
+        for (DoseLog doseLog : getDoseLogsForDate(date)) {
+            String status = doseLog.getStatus();
+
+            if ("missed".equalsIgnoreCase(status) || "skipped".equalsIgnoreCase(status)) {
+                missedCount++;
+            }
+        }
+
+        return missedCount;
     }
 
     /**
