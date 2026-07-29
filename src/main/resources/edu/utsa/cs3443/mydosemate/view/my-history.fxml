@@ -1,14 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.utsa.cs3443.mydosemate.controller.MyHistoryController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="840.0" prefWidth="550.0" style="-fx-background-color: #a7c8ee;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.mydosemate.controller.MyHistoryController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="140.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="550.0">
+         <effect>
+            <DropShadow blurType="ONE_PASS_BOX" offsetY="2.0">
+               <color>
+                  <Color red="0.31578946113586426" green="0.30994153022766113" blue="0.30994153022766113" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Rectangle>
+      <BorderPane prefHeight="840.0" prefWidth="551.0">
+         <top>
+            <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="550.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox>
+                     <children>
+                        <Label fx:id="dateLabel" prefHeight="36.0" prefWidth="372.0">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" top="60.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="greetingLabel" prefHeight="44.0" prefWidth="451.0">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="35.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <Button mnemonicParsing="false" onAction="#goToSettings" prefHeight="49.0" prefWidth="51.0" style="-fx-background-radius: 100; -fx-background-color: white;" text="Settings">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="9.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="ONE_PASS_BOX" offsetY="2.0">
+                           <color>
+                              <Color red="0.6315789222717285" green="0.6228070259094238" blue="0.6228070259094238" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <HBox.margin>
+                        <Insets left="28.0" top="82.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </top>
+         <bottom>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goToDash" prefHeight="79.0" prefWidth="150.0" styleClass="primary-button" stylesheets="@style.css" text="Home">
+                     <HBox.margin>
+                        <Insets left="30.0" top="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="30.0" />
+                     </font>
+                  </Button>
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goToMedicine" prefHeight="79.0" prefWidth="150.0" style="-fx-font-size: 26;" styleClass="primary-button" stylesheets="@style.css" text="Medicine">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goToHistory" prefHeight="79.0" prefWidth="150.0" style="-fx-font-size: 30;" styleClass="primary-button" stylesheets="@style.css" text="History">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </bottom>
+         <center>
+            <StackPane prefHeight="250.0" prefWidth="551.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="572.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="530.0">
+                     <effect>
+                        <DropShadow blurType="ONE_PASS_BOX" offsetY="2.0">
+                           <color>
+                              <Color red="0.31578946113586426" green="0.30994153022766113" blue="0.30994153022766113" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Rectangle>
+                  <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="530.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+                     <content>
+                        <VBox prefHeight="554.0" prefWidth="523.0" style="-fx-background-color: white;" />
+                     </content>
+                     <StackPane.margin>
+                        <Insets top="40.0" />
+                     </StackPane.margin>
+                  </ScrollPane>
+                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="184.0" text="MY HISTORY" textFill="#6b6b6b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets bottom="515.0" right="315.0" />
+                     </StackPane.margin>
+                  </Label>
+               </children>
+            </StackPane>
+         </center>
+      </BorderPane>
+      <Button layoutX="465.0" layoutY="650.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addMedication" prefHeight="59.0" prefWidth="63.0" styleClass="primary-button" stylesheets="@style.css" text="+">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="50.0" />
+         </font>
+      </Button>
+   </children>
 </AnchorPane>

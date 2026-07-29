@@ -85,6 +85,11 @@ public class HomeScreenController {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/add-medication.fxml");
     }
 
+    @FXML
+    private void goToSettings(ActionEvent event) throws IOException{
+        switchScene(event, "/edu/utsa/cs3443/mydosemate/view/settings.fxml");
+    }
+
 
 
 

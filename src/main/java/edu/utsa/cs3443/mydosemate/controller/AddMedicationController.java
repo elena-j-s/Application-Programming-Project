@@ -4,62 +4,49 @@ import edu.utsa.cs3443.mydosemate.model.Medication;
 import edu.utsa.cs3443.mydosemate.model.MedicationTracker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class AddMedicationController {
-
-    @FXML
-    private TextField medicationIdField;
-
-    @FXML
-    private TextField nameField;
-
-    @FXML
-    private TextField dosageField;
-
-    @FXML
-    private TextField unitField;
-
-    @FXML
-    private TextField frequencyField;
-
-    @FXML
-    private TextField timesPerDayField;
-
-    @FXML
-    private TextField startDateField;
-
-    @FXML
-    private TextField currentAmountField;
-
-    @FXML
-    private TextArea notesField;
-
+    // Currently doesn't save,
 
     private MedicationTracker medicationTracker;
 
     @FXML
     public void initialize() {
-        medicationTracker = new MedicationTracker();
-    }
-
-    @FXML
-    public void saveMedication(ActionEvent event) {
 
     }
 
     @FXML
-    public void cancel(ActionEvent event) {
-
-        medicationIdField.clear();
-        nameField.clear();
-        dosageField.clear();
-        unitField.clear();
-        frequencyField.clear();
-        timesPerDayField.clear();
-        startDateField.clear();
-        currentAmountField.clear();
-        notesField.clear();
+    private void switchScene(ActionEvent event, String fxml) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource(fxml));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
+
+    @FXML
+    private void goToDash(ActionEvent event) throws IOException {
+        switchScene(event, "/edu/utsa/cs3443/mydosemate/view/home-dashboard.fxml");
+    }
+    @FXML
+    private void goToMedicine(ActionEvent event) throws IOException {
+        switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-medications.fxml");
+    }
+    @FXML
+    private void goToHistory(ActionEvent event) throws IOException{
+        switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-history.fxml");
+    }
+    @FXML
+    private void goToSettings(ActionEvent event) throws IOException{
+        switchScene(event, "/edu/utsa/cs3443/mydosemate/view/settings.fxml");
+    }
+
 }
