@@ -36,6 +36,8 @@ public class HomeScreenController {
     @FXML
     private ProgressIndicator progressIndicator;
 
+    private MedicationTracker medicationTracker;
+
     @FXML
     public void initialize() {
         // Current Date
@@ -59,14 +61,13 @@ public class HomeScreenController {
             e.printStackTrace();
         }
 
+        medicationTracker = new MedicationTracker();
+
         updateProgress();
     }
 
     private void updateProgress() {
-
-        MedicationTracker tracker = new MedicationTracker();
-
-        int[] report = tracker.getProgressReport();
+        int[] report = medicationTracker.getProgressReport();
         int takenDoses = report[0];
         int missedDoses = report[1];
         int upcomingDoses = report[2];
