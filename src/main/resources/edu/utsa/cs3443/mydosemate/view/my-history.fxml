@@ -39,7 +39,7 @@
                               <Insets left="10.0" top="60.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="greetingLabel" prefHeight="44.0" prefWidth="451.0">
+                        <Label fx:id="greetingLabel" prefHeight="50.0" prefWidth="451.0">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="35.0" />
                            </font>
