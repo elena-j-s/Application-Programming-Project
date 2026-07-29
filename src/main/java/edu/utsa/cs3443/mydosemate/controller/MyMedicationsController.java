@@ -39,6 +39,8 @@ public class MyMedicationsController {
 
     @FXML
     public void initialize() {
+        medicationTracker = new MedicationTracker();
+
         // Current Date
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
@@ -63,10 +65,8 @@ public class MyMedicationsController {
     }
 
     private void displayMedications() {
-
-        MedicationTracker tracker = new MedicationTracker();
-
-        List<Medication> medications = tracker.getMedications();
+        medicationContainer.getChildren().clear();
+        List<Medication> medications = medicationTracker.getMedications();
 
         for (Medication medication : medications) {
             createMedicationCard(medication);
@@ -110,14 +110,23 @@ public class MyMedicationsController {
     }
 
     private void showMedicationDetails(Medication medication) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/edu/utsa/cs3443/mydosemate/view/medication-card.fxml")
+            );
+            Parent root = loader.load();
 
-        System.out.println(
-                "Selected: " + medication.getName()
-        );
+            MedicationCardController controller = loader.getController();
+            controller.setMedication(medication);
 
-        // TO DO:
-        // Load medication-details.fxml
-        // Pass selected medication to controller
+            Stage stage = (Stage) medicationContainer.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        } catch (RuntimeException exception) {
+            exception.printStackTrace();
+        }
     }
 
 
