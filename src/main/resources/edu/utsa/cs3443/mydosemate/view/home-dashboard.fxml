@@ -95,7 +95,7 @@
                         </Rectangle>
                         <ProgressIndicator fx:id="progressIndicator" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="175.0" progress="0.0">
                            <StackPane.margin>
-                              <Insets right="300.0" />
+                              <Insets right="300.0" top="20.0" />
                            </StackPane.margin>
                         </ProgressIndicator>
                         <Label prefHeight="17.0" prefWidth="167.0" text="TODAY'S PROGRESS" textFill="#6b6b6b">
