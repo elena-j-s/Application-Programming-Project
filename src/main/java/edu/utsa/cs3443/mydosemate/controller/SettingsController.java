@@ -30,10 +30,28 @@ public class SettingsController {
 
     @FXML
     public void initialize() {
-
         userManager = new UserManager();
 
-        //loadUserSettings();
+        try {
+            userManager.loadUser();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void editProfile(ActionEvent event) throws IOException {
+        switchScene(event,
+                "/edu/utsa/cs3443/mydosemate/view/edit-profile.fxml");
+    }
+
+    @FXML
+    private void toggleDarkMode(ActionEvent event) {
+        try {
+            userManager.toggleDarkMode();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void switchScene(ActionEvent event, String fxml) throws IOException {
