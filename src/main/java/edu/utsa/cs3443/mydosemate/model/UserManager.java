@@ -38,8 +38,9 @@ public class UserManager {
      * @throws IOException if the file cannot be created or written
      */
     public void createUserFile(String firstName, String lastName, String email, String phone) throws IOException {
+        validateUserCreation(firstName, lastName, email, phone);
         Files.createDirectories(DATA_DIR);
-        user = new User(firstName, lastName, email, phone);
+        user = new User(firstName.trim(), lastName.trim(), normalizeOptionalValue(email), normalizePhone(phone));
 
         try {
             saveUserToFile();
@@ -59,19 +60,35 @@ public class UserManager {
         }
 
         try (BufferedReader reader = Files.newBufferedReader(USER_FILE)) {
-            reader.readLine();
+            String header = reader.readLine();
+            if (header == null) {
+                throw new IOException("user.csv is empty: " + USER_FILE);
+            }
+
+            String expectedHeader = "first_name,last_name,email,phone,dark_mode";
+            if (!expectedHeader.equals(header.trim())) {
+                throw new IOException("user.csv has an invalid header: " + USER_FILE);
+            }
+
             String line = reader.readLine();
             if (line == null || line.trim().isEmpty()) {
                 throw new IOException("user.csv is empty: " + USER_FILE);
             }
 
-            String[] fields = line.split(",");
-            if (fields.length < 5) {
+            String[] fields = line.split(",", -1);
+            if (fields.length != 5) {
                 throw new IOException("user.csv has an invalid format: " + USER_FILE);
             }
 
-            user = new User(fields[0], fields[1], fields[2], fields[3]);
-            user.setIsDarkMode(Boolean.parseBoolean(fields[4]));
+            validateUserCreation(fields[0], fields[1], fields[2], fields[3]);
+
+            String darkModeValue = fields[4].trim();
+            if (!"true".equalsIgnoreCase(darkModeValue) && !"false".equalsIgnoreCase(darkModeValue)) {
+                throw new IOException("user.csv has an invalid dark_mode value: " + USER_FILE);
+            }
+
+        user = new User(fields[0].trim(), fields[1].trim(), normalizeOptionalValue(fields[2]), normalizePhone(fields[3]));
+            user.setIsDarkMode(Boolean.parseBoolean(darkModeValue));
         }
     }
 
@@ -138,7 +155,8 @@ public class UserManager {
      */
     public void setPhoneNumber(String phoneNumber) throws IOException {
         ensureUserLoaded();
-        user.setPhoneNumber(phoneNumber);
+        String cleanPhone = phoneNumber == null ? "" : phoneNumber.replaceAll("\\D", "");
+        user.setPhoneNumber(cleanPhone);
         saveUserToFile();
     }
 
@@ -189,4 +207,39 @@ public class UserManager {
      * @param user the new user instance
      */
     public void setUser(User user) {this.user = user;}
+
+    /**
+     * Validates the user creation fields before they are persisted.
+     *
+     * @param firstName the user's first name
+     * @param lastName the user's last name
+     * @param email the user's email address
+     * @param phone the user's phone number
+     */
+    private void validateUserCreation(String firstName, String lastName, String email, String phone) {
+        UserInputValidator.validateName(firstName);
+        UserInputValidator.validateName(lastName);
+        UserInputValidator.validateEmail(email);
+        UserInputValidator.validatePhone(phone);
+    }
+
+    /**
+     * Normalizes optional string values before persistence.
+     *
+     * @param value the input value
+     * @return a trimmed string, or an empty string if the value is null
+     */
+    private String normalizeOptionalValue(String value) {
+        return value == null ? "" : value.trim();
+    }
+
+    /**
+     * Normalizes a phone number by stripping non-digit characters.
+     *
+     * @param phone the phone number text
+     * @return digits-only phone number, or empty string if null
+     */
+    private String normalizePhone(String phone) {
+        return phone == null ? "" : phone.replaceAll("\\D", "");
+    }
 }
