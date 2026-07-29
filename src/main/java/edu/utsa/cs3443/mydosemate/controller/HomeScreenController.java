@@ -1,5 +1,6 @@
 package edu.utsa.cs3443.mydosemate.controller;
 
+import edu.utsa.cs3443.mydosemate.model.UserManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,20 +46,20 @@ public class HomeScreenController {
         dateLabel.setText(today.format(formatter));
 
         // Greet User
-//        try {
-//            UserManager userManager = new UserManager();
-//            userManager.loadUser();
-//
-//            if (userManager.getUser() != null) {
-//                greetingLabel.setText(
-//                        "Hello, " + userManager.getUser().getFirstName() + "!"
-//                );
-//            }
-//
-//        } catch (IOException e) {
-//            greetingLabel.setText("Hello!");
-//            e.printStackTrace();
-//        }
+        try {
+            UserManager userManager = new UserManager();
+            userManager.loadUser();
+
+            if (userManager.getUser() != null) {
+                greetingLabel.setText(
+                        "Hello, " + userManager.getUser().getFirstName() + "!"
+                );
+            }
+
+        } catch (IOException e) {
+            greetingLabel.setText("Hello!");
+            e.printStackTrace();
+        }
     }
 
     private void switchScene(ActionEvent event, String fxml) throws IOException {

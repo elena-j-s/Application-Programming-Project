@@ -2,6 +2,7 @@ package edu.utsa.cs3443.mydosemate.controller;
 
 import edu.utsa.cs3443.mydosemate.model.Medication;
 import edu.utsa.cs3443.mydosemate.model.MedicationTracker;
+import edu.utsa.cs3443.mydosemate.model.UserManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +43,21 @@ public class MyMedicationsController {
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
         dateLabel.setText(today.format(formatter));
+
+        try {
+            UserManager userManager = new UserManager();
+            userManager.loadUser();
+
+            if (userManager.getUser() != null) {
+                greetingLabel.setText(
+                        "Hello, " + userManager.getUser().getFirstName() + "!"
+                );
+            }
+
+        } catch (IOException e) {
+            greetingLabel.setText("Hello!");
+            e.printStackTrace();
+        }
 
         displayMedications();
     }
