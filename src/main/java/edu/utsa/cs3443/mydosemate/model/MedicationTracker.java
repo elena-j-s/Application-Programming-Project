@@ -2,7 +2,6 @@ package edu.utsa.cs3443.mydosemate.model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -63,9 +62,10 @@ public class MedicationTracker {
 
     /**
      * Loads medications from the specified CSV file.
+     * Creates the file if it doesn't exist.
      *
      * @param medications_csv the medication CSV file to load
-     * @throws IOException if the file is missing, empty, malformed, or contains invalid data
+     * @throws IOException if the file is empty, malformed, or contains invalid data
      */
     public void loadMedications(Path medications_csv) throws IOException{
         if (medications_csv == null) {
@@ -73,7 +73,7 @@ public class MedicationTracker {
         }
 
         if (!Files.exists(medications_csv)) {
-            throw new FileNotFoundException("medications.csv was not found at " + medications_csv);
+            saveMedications(); // create the file if it doesn't exist
         }
 
         ArrayList<Medication> loadedMedications = new ArrayList<Medication>();

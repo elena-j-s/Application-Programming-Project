@@ -2,7 +2,6 @@ package edu.utsa.cs3443.mydosemate.model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -55,7 +54,7 @@ public class History {
         }
 
         if (!Files.exists(dose_log_csv)) {
-            throw new FileNotFoundException("dose_log.csv was not found at " + dose_log_csv);
+            saveDoseLogs(); // create the file if it doesn't exist
         }
 
         ArrayList<DoseLog> loadedDoseLogs = new ArrayList<DoseLog>();
