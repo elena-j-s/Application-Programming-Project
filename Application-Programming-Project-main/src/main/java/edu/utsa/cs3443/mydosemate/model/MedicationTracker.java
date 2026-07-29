@@ -31,7 +31,7 @@ public class MedicationTracker {
     }
 
     public void loadMedications(Path medications_csv) throws IOException{
-        if (medicationsCsv == null) {
+        if (medications_csv == null) {
             throw new IllegalArgumentException("Medication file path cannot be null");
         }
 
@@ -81,11 +81,11 @@ public class MedicationTracker {
     }
 
     public void saveMedications(Path medications_csv) throws IOException {
-        if (medicationsCsv == null) {
+        if (medications_csv == null) {
             throw new IllegalArgumentException("Medication file path cannot be null");
         }
 
-        Path parentDirectory = medicationsCsv.getParent();
+        Path parentDirectory = medications_csv.getParent();
         if (parentDirectory != null) {
             Files.createDirectories(parentDirectory);
         }
@@ -95,7 +95,7 @@ public class MedicationTracker {
         }
 
         try (BufferedWriter writer = Files.newBufferedWriter(
-                medicationsCsv, StandardCharsets.UTF_8)) {
+                medications_csv, StandardCharsets.UTF_8)) {
 
             writer.write(CSV_HEADER);
             writer.newLine();
@@ -124,7 +124,7 @@ public class MedicationTracker {
         }
     }
 
-    public boolean removeMedication(int medication_id) {
+    public boolean removeMedication(int medication_id) throws IOException {
         int medicationIndex = findMedicationIndexById(medication_id);
 
         if (medicationIndex == -1) {
@@ -211,7 +211,7 @@ public class MedicationTracker {
         return true;
     }
 
-    public boolean skipMedication(int medication_id) {
+    public boolean markMedicationMissed(int medication_id) {
         return getMedicationById(medication_id) != null;
     }
 

@@ -45,17 +45,17 @@
                       VBox.vgrow="ALWAYS"
                       placeholder="No medications are scheduled for today."/>
 
-            <HBox alignment="CENTER_RIGHT"
-                  spacing="8.0">
+                <HBox alignment="CENTER_RIGHT"
+                        spacing="8.0">
 
-                <Button text="Skip Selected"
-                        onAction="#handleSkipMedication"/>
+                        <Button text="Mark Missed"
+                                onAction="#handleMissedMedication"/>
 
-                <Button text="Take Selected"
-                        defaultButton="true"
-                        onAction="#handleTakeMedication"/>
+                        <Button text="Mark Taken"
+                                defaultButton="true"
+                                onAction="#handleTakeMedication"/>
 
-            </HBox>
+                </HBox>
 
             <Label fx:id="messageLabel"
                    minHeight="16.0"

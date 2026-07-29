@@ -13,28 +13,39 @@ import java.io.IOException;
 
 public class MyDosemateApplication extends Application {
 
-    private final MedicationTracker medicationTracker = new MedicationTracker();
+    private final MedicationTracker medicationTracker =
+            new MedicationTracker();
 
     @Override
     public void start(Stage stage) throws IOException {
         try {
             medicationTracker.loadMedications();
+
         } catch (FileNotFoundException exception) {
             // Creates an empty medications.csv with its header.
             medicationTracker.saveMedications();
         }
 
-        FXMLLoader fxmlLoader = new FXMLLoader(MyDosemateApplication.class.getResource("hello-view.fxml"));
-
-        HomeScreenController controller = loader.getController();
-        controller.setMedicationTracker(medicationTracker);
+        FXMLLoader loader = new FXMLLoader(
+                MyDosemateApplication.class.getResource(
+                        "/edu/utsa/cs3443/mydosemate/view/"
+                                + "home-dashboard.fxml"
+                )
+        );
 
         Parent root = loader.load();
-        HomeScreenController controller = loader.getController();
 
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene); //stage.setScene(new Scene(root, 320, 240));
+        HomeScreenController controller =
+                loader.getController();
+
+        controller.setMedicationTracker(
+                medicationTracker
+        );
+
+        Scene scene = new Scene(root, 600, 400);
+
+        stage.setTitle("My DoseMate");
+        stage.setScene(scene);
         stage.show();
     }
 
