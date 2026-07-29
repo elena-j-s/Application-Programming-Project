@@ -80,7 +80,11 @@ public class UserManager {
                 throw new IOException("user.csv has an invalid format: " + USER_FILE);
             }
 
-            validateUserCreation(fields[0], fields[1], fields[2], fields[3]);
+            try {
+                validateUserCreation(fields[0], fields[1], fields[2], fields[3]);
+            } catch (IllegalArgumentException e) {
+                throw new IOException("user.csv has an invalid user: " + USER_FILE, e);
+            }
 
             String darkModeValue = fields[4].trim();
             if (!"true".equalsIgnoreCase(darkModeValue) && !"false".equalsIgnoreCase(darkModeValue)) {
@@ -184,6 +188,27 @@ public class UserManager {
     }
 
     /**
+     * Updates the user's profile fields and saves the change to disk in one step.
+     *
+     * @param firstName the new first name
+     * @param lastName the new last name
+     * @param email the new email address
+     * @param phone the new phone number
+     * @throws IOException if validation or saving fails
+     */
+    public void updateUserProfile(String firstName, String lastName, String email, String phone)
+            throws IOException {
+        ensureUserLoaded();
+        validateUserCreation(firstName, lastName, email, phone);
+
+        user.setFirstName(firstName.trim());
+        user.setLastName(lastName.trim());
+        user.setEmail(normalizeOptionalValue(email));
+        user.setPhoneNumber(normalizePhone(phone));
+        saveUserToFile();
+    }
+
+    /**
      * Ensures a user has already been loaded or created.
      *
      * @throws IllegalStateException if no user is currently available
@@ -216,7 +241,7 @@ public class UserManager {
      * @param email the user's email address
      * @param phone the user's phone number
      */
-    private void validateUserCreation(String firstName, String lastName, String email, String phone) {
+    private void validateUserCreation(String firstName, String lastName, String email, String phone) throws IllegalArgumentException {
         UserInputValidator.validateName(firstName);
         UserInputValidator.validateName(lastName);
         UserInputValidator.validateEmail(email);
