@@ -138,7 +138,8 @@ public class UserManager {
      */
     public void setPhoneNumber(String phoneNumber) throws IOException {
         ensureUserLoaded();
-        user.setPhoneNumber(phoneNumber);
+        String cleanPhone = phoneNumber.replaceAll("\\D", "");
+        user.setPhoneNumber(cleanPhone);
         saveUserToFile();
     }
 
