@@ -98,7 +98,8 @@ public class MyHistoryController {
             return;
         }
 
-        for (DoseLog log : logs) {
+        for (int i = logs.size() - 1; i >= 0; i--) {
+            DoseLog log = logs.get(i);
             Label logLabel = new Label(medicationTracker.doseLogToSentence(log));
 
             logLabel.setWrapText(true);
