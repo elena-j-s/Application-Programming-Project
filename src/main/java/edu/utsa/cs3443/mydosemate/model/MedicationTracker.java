@@ -13,6 +13,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -711,5 +713,68 @@ public class MedicationTracker {
      */
     private String buildDoseSlotKey(int medicationId, LocalDateTime scheduledDateTime) {
         return medicationId + "|" + scheduledDateTime;
+    }
+
+    /**
+     * Converts a dose log into a user-friendly sentence.
+     *
+     * @param doseLog the dose log to describe
+     * @return a readable description of the dose log
+     */
+    public String doseLogToSentence(DoseLog doseLog) {
+        if (doseLog == null) {
+            return "No dose information is available.";
+        }
+
+        Medication medication = getMedicationById(doseLog.getMedId());
+
+        String medicationName = medication == null
+                ? "Unknown medication"
+                : medication.getName();
+
+        String scheduledTime = formatDateTime(doseLog.getScheduledTime());
+
+        String takenTime = doseLog.getTakenTime();
+        String statusDescription;
+
+        if (takenTime == null || takenTime.trim().isEmpty()) {
+            statusDescription = "It was not recorded as taken";
+        } else {
+            statusDescription =
+                    "It was taken " + formatDateTime(takenTime);
+        }
+
+        return medicationName
+                + " was scheduled for "
+                + scheduledTime
+                + ". "
+                + statusDescription
+                + ".";
+    }
+
+    /**
+     * Converts an ISO date-time string into a readable date and time.
+     *
+     * @param dateTimeText an ISO date-time such as 2026-07-20T08:05
+     * @return a user-friendly date and time
+     */
+    private String formatDateTime(String dateTimeText) {
+        if (dateTimeText == null || dateTimeText.trim().isEmpty()) {
+            return "an unknown time";
+        }
+
+        try {
+            LocalDateTime dateTime =
+                    LocalDateTime.parse(dateTimeText.trim());
+
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern(
+                            "MMMM d, yyyy 'at' h:mm a"
+                    );
+
+            return dateTime.format(formatter);
+        } catch (DateTimeParseException exception) {
+            return dateTimeText;
+        }
     }
 }

@@ -40,7 +40,7 @@ public class History {
      * @throws IOException if the file cannot be read or parsed
      */
     public void loadDoseLogs() throws IOException {
-        loadDoseLogs(DOSE_LOG_FILE);
+        loadDoseLogs(resolveDoseLogFile());
     }
 
     /**
@@ -163,32 +163,40 @@ public class History {
      * rewriting the rest of the file, then records it in memory.
      *
      * @param doseLog the dose log entry to append
-     * @param dose_log_csv the file to append to
+     * @param doseLogCsv the file to append to
      * @throws IOException if the file cannot be written
      */
-    public void appendDoseLog(DoseLog doseLog, Path dose_log_csv) throws IOException {
+    public void appendDoseLog(
+            DoseLog doseLog,
+            Path doseLogCsv
+    ) throws IOException {
         if (doseLog == null) {
             throw new IllegalArgumentException("Dose log cannot be null");
         }
 
-        if (dose_log_csv == null) {
-            throw new IllegalArgumentException("Dose log file path cannot be null");
+        if (doseLogCsv == null) {
+            throw new IllegalArgumentException(
+                    "Dose log file path cannot be null"
+            );
         }
 
-        Path parentDirectory = dose_log_csv.getParent();
+        Path parentDirectory = doseLogCsv.getParent();
+
         if (parentDirectory != null) {
             Files.createDirectories(parentDirectory);
         }
 
-        boolean fileAlreadyExists = Files.exists(dose_log_csv);
+        boolean needsHeader =
+                !Files.exists(doseLogCsv)
+                        || Files.size(doseLogCsv) == 0;
 
         try (BufferedWriter writer = Files.newBufferedWriter(
-                dose_log_csv,
+                doseLogCsv,
                 StandardCharsets.UTF_8,
                 StandardOpenOption.CREATE,
                 StandardOpenOption.APPEND)) {
 
-            if (!fileAlreadyExists) {
+            if (needsHeader) {
                 writer.write(CSV_HEADER);
                 writer.newLine();
             }
@@ -199,7 +207,6 @@ public class History {
 
         doseLogs.add(doseLog);
     }
-
     /**
      * Returns all dose logs recorded for a given medication, in load/insertion order.
      *
@@ -378,5 +385,31 @@ public class History {
      */
     public int getDoseLogId() {
         return doseLogs.size() + 100;
+    }
+
+    /**
+     * Resolves the dose log file from the current working directory or one of
+     * its parent directories.
+     *
+     * <p>
+     * This keeps the app working when the JVM launches from an IDE, a test
+     * runner, or the project root.
+     *
+     * @return the first existing dose log path found, or the default path if
+     *         no existing file is discovered
+     */
+    private Path resolveDoseLogFile() {
+        Path currentDirectory = Paths.get("").toAbsolutePath();
+
+        while (currentDirectory != null) {
+            Path candidate = currentDirectory.resolve(DOSE_LOG_FILE).normalize();
+            if (Files.exists(candidate)) {
+                return candidate;
+            }
+
+            currentDirectory = currentDirectory.getParent();
+        }
+
+        return DOSE_LOG_FILE;
     }
 }
