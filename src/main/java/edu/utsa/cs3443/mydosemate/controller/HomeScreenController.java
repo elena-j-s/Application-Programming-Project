@@ -1,6 +1,5 @@
 package edu.utsa.cs3443.mydosemate.controller;
 
-import edu.utsa.cs3443.mydosemate.model.DoseLog;
 import edu.utsa.cs3443.mydosemate.model.MedicationTracker;
 import edu.utsa.cs3443.mydosemate.model.UserManager;
 import javafx.event.ActionEvent;
@@ -16,7 +15,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class HomeScreenController {
 
@@ -68,33 +66,17 @@ public class HomeScreenController {
 
         MedicationTracker tracker = new MedicationTracker();
 
-        List<DoseLog> doseLogs =
-                tracker.getHistory().getDoseLogs();
+        int[] report = tracker.getProgressReport();
+        int takenDoses = report[0];
+        int missedDoses = report[1];
+        int upcomingDoses = report[2];
+        int progressPercent = report[3];
 
-        int totalDoses = doseLogs.size();
-        int takenDoses = 0;
-        int missedDoses = 0;
-
-        for (DoseLog log : doseLogs) {
-
-            if (log.isTaken()) {
-                takenDoses++;
-            } else {
-                missedDoses++;
-            }
-        }
-
-        if (totalDoses > 0) {
-            progressIndicator.setProgress(
-                    (double) takenDoses / totalDoses
-            );
-        } else {
-            progressIndicator.setProgress(0);
-        }
+        progressIndicator.setProgress(progressPercent / 100.0);
 
         takenDataLabel.setText(String.valueOf(takenDoses));
         missedDataLabel.setText(String.valueOf(missedDoses));
-        upcomingDataLabel.setText("0");
+        upcomingDataLabel.setText(String.valueOf(upcomingDoses));
     }
 
     private void switchScene(ActionEvent event, String fxml) throws IOException {
