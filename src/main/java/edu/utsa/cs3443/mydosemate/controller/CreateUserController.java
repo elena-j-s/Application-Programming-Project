@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -16,29 +17,41 @@ import java.io.IOException;
 
 public class CreateUserController {
 
-    // create an error message for empty fields !!
-    // connect enter user data !!
+    @FXML
+    private TextField firstNameField;
 
     @FXML
-    private Label MyDoseMate;
+    private TextField lastNameField;
 
     @FXML
-    private TextField createNameField;
+    private TextField emailField;
 
     @FXML
-    private TextField createEmailField;
-
-    @FXML
-    private TextField createPasswordField;
-
-    @FXML
-    private TextField confirmPasswordField;
+    private TextField phoneField;
 
     @FXML
     private Button createAccountButton;
 
+    private final UserManager userManager = new UserManager();
+
     @FXML
     private void createAccountClicked(ActionEvent event) throws IOException {
+        String firstName = firstNameField == null ? "" : firstNameField.getText().trim();
+        String lastName = lastNameField == null ? "" : lastNameField.getText().trim();
+        String email = emailField == null ? "" : emailField.getText().trim();
+        String phone = phoneField == null ? "" : phoneField.getText().trim();
+
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Missing Required Fields");
+            alert.setHeaderText(null);
+            alert.setContentText("First Name and Last Name are required.");
+            alert.showAndWait();
+            return;
+        }
+
+        userManager.createUserFile(firstName, lastName, email, phone);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/utsa/cs3443/mydosemate/view/home-dashboard.fxml"));
 
         Parent root = loader.load();
