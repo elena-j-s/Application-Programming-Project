@@ -2,3 +2,4 @@ med_id,name,dosage,unit,frequency,times_per_day,scheduled_times,start_date,curre
 1,Metformin,500,mg,daily,2,08:00;20:00,2026-01-10,42,take with food
 2,Lisinopril,10,mg,daily,1,08:00,2026-03-15,18,watch blood pressure
 3,Vitamin D3,2000,IU,weekly,1,09:00,2026-05-01,6,take with breakfast
+4,Paracetamol,1,tablet,daily,2,10:00;22:00,2026-07-29,10,take with food.
