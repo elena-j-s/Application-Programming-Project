@@ -28,13 +28,20 @@
                   <Insets />
                </BorderPane.margin>
                <children>
-                  <Button mnemonicParsing="false" onAction="#goBack" text="&lt;">
+                  <Button mnemonicParsing="false" onAction="#goBack" prefHeight="44.0" prefWidth="50.0" style="-fx-background-radius: 30; -fx-background-color: white;" text="&lt;">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="13.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="20.0" top="80.0" />
+                        <Insets left="10.0" top="80.0" />
                      </HBox.margin>
+                     <effect>
+                        <DropShadow blurType="ONE_PASS_BOX" offsetY="2.0">
+                           <color>
+                              <Color red="0.6313725709915161" green="0.6235294342041016" blue="0.6235294342041016" />
+                           </color>
+                        </DropShadow>
+                     </effect>
                   </Button>
                   <Label prefHeight="36.0" prefWidth="228.0" text="Add Medication">
                      <font>
@@ -44,19 +51,19 @@
                         <Insets left="102.0" top="80.0" />
                      </HBox.margin>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#goToSettings" prefHeight="49.0" prefWidth="81.0" style="-fx-background-radius: 100; -fx-background-color: white;" text="Settings">
+                  <Button mnemonicParsing="false" onAction="#goToSettings" prefHeight="49.0" prefWidth="54.0" style="-fx-background-radius: 200; -fx-background-color: white;" text="Settings">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="9.0" />
                      </font>
                      <effect>
                         <DropShadow blurType="ONE_PASS_BOX" offsetY="2.0">
                            <color>
-                              <Color red="0.6315789222717285" green="0.6228070259094238" blue="0.6228070259094238" />
+                              <Color red="0.6313725709915161" green="0.6235294342041016" blue="0.6235294342041016" />
                            </color>
                         </DropShadow>
                      </effect>
                      <HBox.margin>
-                        <Insets left="100.0" top="70.0" />
+                        <Insets left="97.0" top="70.0" />
                      </HBox.margin>
                   </Button>
                </children>
@@ -67,7 +74,7 @@
                <content>
                   <VBox alignment="TOP_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="550.0">
                      <padding>
-                        <Insets left="54.0" right="54.0" top="8.0" bottom="18.0" />
+                        <Insets bottom="18.0" left="54.0" right="54.0" top="8.0" />
                      </padding>
                      <spacing>5.0</spacing>
                      <children>
@@ -135,7 +142,7 @@
                               <Font name="Arial Rounded MT Bold" size="20.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="timesPerDayField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="430.0" promptText="Number of scheduled doses" style="-fx-background-radius: 16;">
+                        <TextField fx:id="timesPerDayField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="430.0" promptText="Number of scheduled doses" style="-fx-background-radius: 16;">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="13.0" />
                            </font>

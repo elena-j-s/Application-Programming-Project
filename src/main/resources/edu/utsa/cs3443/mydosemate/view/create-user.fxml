@@ -12,74 +12,47 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity"
-            maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="840.0"
-            prefWidth="550.0"
-            style="-fx-background-color: #5B85EB;"
-            xmlns="http://javafx.com/javafx/26"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.utsa.cs3443.mydosemate.controller.CreateUserController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="550.0" style="-fx-background-color: #5B85EB;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.mydosemate.controller.CreateUserController">
 
    <children>
 
-      <Region layoutY="220.0"
-              maxHeight="-Infinity"
-              maxWidth="-Infinity"
-              minHeight="-Infinity"
-              minWidth="-Infinity"
-              opacity="0.9"
-              prefHeight="622.0"
-              prefWidth="550.0"
-              style="-fx-background-color: #FFFFFF;
-                       -fx-background-radius: 30 30 0 0;">
+      <Region layoutY="220.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.9" prefHeight="622.0" prefWidth="550.0" style="-fx-background-color: #FFFFFF;                        -fx-background-radius: 30 30 0 0;">
 
          <effect>
-            <DropShadow height="6.17"
-                        offsetY="-10.0"
-                        radius="6.2925">
+            <DropShadow height="6.17" offsetY="-10.0" radius="6.2925">
                <color>
-                  <Color opacity="0.12643678486347198"/>
+                  <Color opacity="0.12643678486347198" />
                </color>
             </DropShadow>
          </effect>
       </Region>
 
-      <Label alignment="CENTER"
-             prefHeight="71.0"
-             prefWidth="546.0"
-             text="MyDoseMate"
-             textFill="WHITE">
+      <Label alignment="CENTER" prefHeight="71.0" prefWidth="546.0" text="MyDoseMate" textFill="WHITE">
 
          <font>
-            <Font name="Arial Rounded MT Bold" size="60.0"/>
+            <Font name="Arial Rounded MT Bold" size="60.0" />
          </font>
 
          <padding>
-            <Insets top="120.0"/>
+            <Insets top="120.0" />
          </padding>
       </Label>
 
-      <VBox alignment="TOP_LEFT"
-            layoutY="217.0"
-            prefHeight="623.0"
-            prefWidth="550.0">
+      <VBox alignment="TOP_LEFT" layoutY="217.0" prefHeight="623.0" prefWidth="550.0">
 
          <padding>
-            <Insets left="62.0" right="62.0"/>
+            <Insets left="62.0" right="62.0" />
          </padding>
 
          <children>
 
             <Label text="Create An Account">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="40.0"/>
+                  <Font name="Arial Rounded MT Bold" size="40.0" />
                </font>
 
                <VBox.margin>
-                  <Insets top="30.0"/>
+                  <Insets top="30.0" />
                </VBox.margin>
             </Label>
 
@@ -87,42 +60,29 @@
 
             <Label text="First Name *">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="25.0"/>
+                  <Font name="Arial Rounded MT Bold" size="25.0" />
                </font>
 
                <VBox.margin>
-                  <Insets top="20.0"/>
+                  <Insets top="20.0" />
                </VBox.margin>
             </Label>
 
-            <TextField fx:id="firstNameField"
-                       maxHeight="-Infinity"
-                       maxWidth="-Infinity"
-                       minHeight="-Infinity"
-                       minWidth="-Infinity"
-                       prefHeight="44.0"
-                       prefWidth="425.0"
-                       promptText="Enter your first name">
+            <TextField fx:id="firstNameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="425.0" promptText="Enter your first name">
 
                <VBox.margin>
-                  <Insets top="5.0"/>
+                  <Insets top="5.0" />
                </VBox.margin>
             </TextField>
 
-            <Label fx:id="firstNameErrorLabel"
-                   minHeight="18.0"
-                   prefHeight="18.0"
-                   prefWidth="425.0"
-                   text=""
-                   textFill="#C62828"
-                   wrapText="true">
+            <Label fx:id="firstNameErrorLabel" minHeight="18.0" prefHeight="18.0" prefWidth="425.0" text="" textFill="#C62828" wrapText="true">
 
                <font>
-                  <Font name="Arial" size="13.0"/>
+                  <Font name="Arial" size="13.0" />
                </font>
 
                <VBox.margin>
-                  <Insets top="2.0"/>
+                  <Insets top="2.0" />
                </VBox.margin>
             </Label>
 
@@ -130,42 +90,29 @@
 
             <Label text="Last Name *">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="25.0"/>
+                  <Font name="Arial Rounded MT Bold" size="25.0" />
                </font>
 
                <VBox.margin>
-                  <Insets top="2.0"/>
+                  <Insets top="2.0" />
                </VBox.margin>
             </Label>
 
-            <TextField fx:id="lastNameField"
-                       maxHeight="-Infinity"
-                       maxWidth="-Infinity"
-                       minHeight="-Infinity"
-                       minWidth="-Infinity"
-                       prefHeight="44.0"
-                       prefWidth="425.0"
-                       promptText="Enter your last name">
+            <TextField fx:id="lastNameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="425.0" promptText="Enter your last name">
 
                <VBox.margin>
-                  <Insets top="5.0"/>
+                  <Insets top="5.0" />
                </VBox.margin>
             </TextField>
 
-            <Label fx:id="lastNameErrorLabel"
-                   minHeight="18.0"
-                   prefHeight="18.0"
-                   prefWidth="425.0"
-                   text=""
-                   textFill="#C62828"
-                   wrapText="true">
+            <Label fx:id="lastNameErrorLabel" minHeight="18.0" prefHeight="18.0" prefWidth="425.0" text="" textFill="#C62828" wrapText="true">
 
                <font>
-                  <Font name="Arial" size="13.0"/>
+                  <Font name="Arial" size="13.0" />
                </font>
 
                <VBox.margin>
-                  <Insets top="2.0"/>
+                  <Insets top="2.0" />
                </VBox.margin>
             </Label>
 
@@ -173,42 +120,29 @@
 
             <Label text="Email">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="25.0"/>
+                  <Font name="Arial Rounded MT Bold" size="25.0" />
                </font>
 
                <VBox.margin>
-                  <Insets top="2.0"/>
+                  <Insets top="2.0" />
                </VBox.margin>
             </Label>
 
-            <TextField fx:id="emailField"
-                       maxHeight="-Infinity"
-                       maxWidth="-Infinity"
-                       minHeight="-Infinity"
-                       minWidth="-Infinity"
-                       prefHeight="44.0"
-                       prefWidth="425.0"
-                       promptText="Enter your email">
+            <TextField fx:id="emailField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="425.0" promptText="Enter your email">
 
                <VBox.margin>
-                  <Insets top="5.0"/>
+                  <Insets top="5.0" />
                </VBox.margin>
             </TextField>
 
-            <Label fx:id="emailErrorLabel"
-                   minHeight="18.0"
-                   prefHeight="18.0"
-                   prefWidth="425.0"
-                   text=""
-                   textFill="#C62828"
-                   wrapText="true">
+            <Label fx:id="emailErrorLabel" minHeight="18.0" prefHeight="18.0" prefWidth="425.0" text="" textFill="#C62828" wrapText="true">
 
                <font>
-                  <Font name="Arial" size="13.0"/>
+                  <Font name="Arial" size="13.0" />
                </font>
 
                <VBox.margin>
-                  <Insets top="2.0"/>
+                  <Insets top="2.0" />
                </VBox.margin>
             </Label>
 
@@ -216,63 +150,43 @@
 
             <Label text="Phone Number">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="25.0"/>
+                  <Font name="Arial Rounded MT Bold" size="25.0" />
                </font>
 
                <VBox.margin>
-                  <Insets top="2.0"/>
+                  <Insets top="2.0" />
                </VBox.margin>
             </Label>
 
-            <TextField fx:id="phoneField"
-                       maxHeight="-Infinity"
-                       maxWidth="-Infinity"
-                       minHeight="-Infinity"
-                       minWidth="-Infinity"
-                       prefHeight="44.0"
-                       prefWidth="425.0"
-                       promptText="Enter your phone number">
+            <TextField fx:id="phoneField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="425.0" promptText="Enter your phone number">
 
                <VBox.margin>
-                  <Insets top="5.0"/>
+                  <Insets top="5.0" />
                </VBox.margin>
             </TextField>
 
-            <Label fx:id="phoneErrorLabel"
-                   minHeight="18.0"
-                   prefHeight="18.0"
-                   prefWidth="425.0"
-                   text=""
-                   textFill="#C62828"
-                   wrapText="true">
+            <Label fx:id="phoneErrorLabel" minHeight="18.0" prefHeight="18.0" prefWidth="425.0" text="" textFill="#C62828" wrapText="true">
 
                <font>
-                  <Font name="Arial" size="13.0"/>
+                  <Font name="Arial" size="13.0" />
                </font>
 
                <VBox.margin>
-                  <Insets top="2.0"/>
+                  <Insets top="2.0" />
                </VBox.margin>
             </Label>
 
-            <Line endX="100.0"
-                  startX="-325.0"
-                  stroke="#ABAAAA"
-                  strokeWidth="2.0">
+            <Line endX="100.0" startX="-325.0" stroke="#ABAAAA" strokeWidth="2.0">
 
                <VBox.margin>
-                  <Insets top="12.0"/>
+                  <Insets top="12.0" />
                </VBox.margin>
             </Line>
 
-            <Button mnemonicParsing="false"
-                    onAction="#createAccountClicked"
-                    styleClass="primary-button"
-                    stylesheets="@style.css"
-                    text="Create Account">
+            <Button mnemonicParsing="false" onAction="#createAccountClicked" styleClass="primary-button" stylesheets="@style.css" text="Create Account">
 
                <VBox.margin>
-                  <Insets top="15.0"/>
+                  <Insets left="75.0" top="15.0" />
                </VBox.margin>
             </Button>
 

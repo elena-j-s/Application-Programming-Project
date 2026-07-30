@@ -28,20 +28,30 @@
          <top>
             <HBox BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets top="105.0" />
+                  <Insets top="80.0" />
                </BorderPane.margin>
                <children>
-                  <Button mnemonicParsing="false" onAction="#goBack" text="&lt; Back">
+                  <Button mnemonicParsing="false" onAction="#goBack" prefHeight="41.0" prefWidth="43.0" style="-fx-background-color: white; -fx-background-radius: 20;" text="&lt;">
                      <HBox.margin>
                         <Insets left="20.0" top="5.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="ONE_PASS_BOX" offsetY="2.0">
+                           <color>
+                              <Color red="0.6313725709915161" green="0.6235294342041016" blue="0.6235294342041016" />
+                           </color>
+                        </DropShadow>
+                     </effect>
                   </Button>
                   <Label text="Edit Profile">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="30.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="120.0" />
+                        <Insets left="130.0" top="15.0" />
                      </HBox.margin>
                   </Label>
                </children>
