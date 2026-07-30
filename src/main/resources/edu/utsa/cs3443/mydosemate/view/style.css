@@ -13,3 +13,21 @@
 .primary-button:pressed {
     -fx-background-color: #35498F;
 }
+
+.dose-action-button {
+    -fx-background-color: #4A61AF;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 12px;
+    -fx-padding: 6 10 6 10;
+}
+
+.dose-action-button:hover {
+    -fx-background-color: #6178C7;
+}
+
+.dose-action-button:disabled {
+    -fx-background-color: #9aa7ad;
+    -fx-opacity: 0.75;
+}

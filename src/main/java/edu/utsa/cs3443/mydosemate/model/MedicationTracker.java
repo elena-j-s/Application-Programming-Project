@@ -16,6 +16,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -286,7 +288,43 @@ public class MedicationTracker {
     public boolean takeMedication(int medication_id) throws IOException {
         Medication medication = getMedicationById(medication_id);
 
-        if (medication == null || medication.getCurrentAmount() <= 0) {
+        if (medication == null) {
+            return false;
+        }
+
+        LocalDateTime scheduledTime = LocalDateTime.of(
+                LocalDate.now(), closestScheduledTime(medication));
+        return takeScheduledDose(medication_id, scheduledTime);
+    }
+
+    /**
+     * Marks one exact scheduled dose as taken. A previously missed dose is
+     * updated in place so one medication schedule slot never has two logs.
+     *
+     * @param medicationId the medication ID
+     * @param scheduledTime the exact schedule slot selected on the dashboard
+     * @return {@code true} when the dose was marked taken; {@code false} when
+     *         it was already taken or no supply remains
+     * @throws IOException if medication or history persistence fails
+     */
+    public boolean takeScheduledDose(
+            int medicationId,
+            LocalDateTime scheduledTime
+    ) throws IOException {
+        Medication medication = getMedicationById(medicationId);
+
+        if (medication == null || scheduledTime == null) {
+            return false;
+        }
+
+        DoseLog existingLog = history.getDoseLog(medicationId, scheduledTime);
+
+        if (existingLog != null
+                && "taken".equalsIgnoreCase(existingLog.getStatus())) {
+            return false;
+        }
+
+        if (medication.getCurrentAmount() <= 0) {
             return false;
         }
 
@@ -300,13 +338,48 @@ public class MedicationTracker {
             throw exception;
         }
 
-        DoseLog doseLog = buildDoseLog(medication, "taken", LocalDateTime.now());
+        LocalDateTime takenTime = LocalDateTime.now()
+                .withSecond(0)
+                .withNano(0);
+        String doseAmount = formatDoseAmount(medication);
 
         try {
-            history.appendDoseLog(doseLog);
+            if (existingLog == null) {
+                DoseLog doseLog = new DoseLog(
+                        history.getDoseLogId(),
+                        medicationId,
+                        scheduledTime.toString(),
+                        takenTime.toString(),
+                        doseAmount,
+                        "taken");
+                history.appendDoseLog(doseLog);
+            } else {
+                String previousTakenTime = existingLog.getTakenTime();
+                String previousDoseAmount = existingLog.getDoseAmount();
+                String previousStatus = existingLog.getStatus();
+
+                existingLog.setTakenTime(takenTime.toString());
+                existingLog.setDoseAmount(doseAmount);
+                existingLog.setStatus("taken");
+
+                try {
+                    history.saveDoseLogs();
+                } catch (IOException exception) {
+                    existingLog.setTakenTime(previousTakenTime);
+                    existingLog.setDoseAmount(previousDoseAmount);
+                    existingLog.setStatus(previousStatus);
+                    throw exception;
+                }
+            }
         } catch (IOException exception) {
             medication.setCurrentAmount(previousAmount);
-            saveMedications();
+
+            try {
+                saveMedications();
+            } catch (IOException rollbackException) {
+                exception.addSuppressed(rollbackException);
+            }
+
             throw exception;
         }
 
@@ -610,6 +683,108 @@ public class MedicationTracker {
      */
     public History getHistory() {
         return history;
+    }
+
+    /**
+     * Returns every scheduled dose for the current day in chronological order.
+     * Past unrecorded slots are persisted as missed before the list is built.
+     *
+     * @return today's individual scheduled doses
+     * @throws IOException if missed-dose history cannot be saved
+     */
+    public List<ScheduledDose> getTodaysScheduledDoses() throws IOException {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate today = now.toLocalDate();
+
+        recordPastDueDoses(now);
+
+        ArrayList<ScheduledDose> scheduledDoses =
+                new ArrayList<ScheduledDose>();
+
+        for (Medication medication : medications) {
+            if (!isMedicationDueToday(medication, today)) {
+                continue;
+            }
+
+            String[] scheduledTimes = medication.getScheduledTimes().split(";", -1);
+
+            for (String scheduledTimeText : scheduledTimes) {
+                LocalTime time = LocalTime.parse(scheduledTimeText.trim());
+                LocalDateTime scheduledTime = LocalDateTime.of(today, time);
+                DoseLog log = history.getDoseLog(
+                        medication.getMedicationId(), scheduledTime);
+
+                ScheduledDose.Status status;
+                LocalDateTime takenTime = null;
+
+                if (log != null && "taken".equalsIgnoreCase(log.getStatus())) {
+                    status = ScheduledDose.Status.TAKEN;
+                    takenTime = log.getTakenDateTime();
+                } else if (scheduledTime.isBefore(now)) {
+                    status = ScheduledDose.Status.MISSED;
+                } else {
+                    status = ScheduledDose.Status.UPCOMING;
+                }
+
+                scheduledDoses.add(new ScheduledDose(
+                        medication, scheduledTime, status, takenTime));
+            }
+        }
+
+        Collections.sort(scheduledDoses, new Comparator<ScheduledDose>() {
+            @Override
+            public int compare(ScheduledDose first, ScheduledDose second) {
+                return first.getScheduledTime().compareTo(
+                        second.getScheduledTime());
+            }
+        });
+
+        return scheduledDoses;
+    }
+
+    /**
+     * Persists a missed log for each past schedule slot that has no log yet.
+     *
+     * @param now the current time used to determine which slots are past due
+     * @throws IOException if a missed log cannot be appended
+     */
+    private void recordPastDueDoses(LocalDateTime now) throws IOException {
+        LocalDate today = now.toLocalDate();
+
+        for (Medication medication : medications) {
+            if (!isMedicationDueToday(medication, today)) {
+                continue;
+            }
+
+            String[] scheduledTimes = medication.getScheduledTimes().split(";", -1);
+
+            for (String scheduledTimeText : scheduledTimes) {
+                LocalTime time = LocalTime.parse(scheduledTimeText.trim());
+                LocalDateTime scheduledTime = LocalDateTime.of(today, time);
+
+                if (!scheduledTime.isBefore(now)
+                        || history.getDoseLog(
+                                medication.getMedicationId(),
+                                scheduledTime) != null) {
+                    continue;
+                }
+
+                DoseLog missedLog = new DoseLog(
+                        history.getDoseLogId(),
+                        medication.getMedicationId(),
+                        scheduledTime.toString(),
+                        "",
+                        formatDoseAmount(medication),
+                        "missed");
+                history.appendDoseLog(missedLog);
+            }
+        }
+    }
+
+    /** Formats a medication's configured dose for display and history. */
+    private String formatDoseAmount(Medication medication) {
+        return formatDosageAmount(medication.getDosage())
+                + " " + medication.getUnit();
     }
 
     /**
