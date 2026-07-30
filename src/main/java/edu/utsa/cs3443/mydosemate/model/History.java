@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +96,10 @@ public class History {
      * @param doseLog the dose log to add
      */
     public void addDoseLog(DoseLog doseLog) {
+        if (doseLog == null) {
+            throw new IllegalArgumentException("Dose log cannot be null");
+        }
+
         doseLogs.add(doseLog);
     }
 
@@ -114,7 +119,7 @@ public class History {
      * @throws IOException if the file cannot be written
      */
     public void saveDoseLogs() throws IOException {
-        saveDoseLogs(DOSE_LOG_FILE);
+        saveDoseLogs(resolveDoseLogFile());
     }
 
     /**
@@ -154,7 +159,7 @@ public class History {
      * @throws IOException if the file cannot be written
      */
     public void appendDoseLog(DoseLog doseLog) throws IOException {
-        appendDoseLog(doseLog, DOSE_LOG_FILE);
+        appendDoseLog(doseLog, resolveDoseLogFile());
     }
 
     /**
@@ -271,6 +276,28 @@ public class History {
     }
 
     /**
+     * Finds the log belonging to one exact medication schedule slot.
+     *
+     * @param medicationId the medication ID
+     * @param scheduledTime the exact scheduled date and time
+     * @return the matching log or {@code null} when the slot is unrecorded
+     */
+    public DoseLog getDoseLog(int medicationId, LocalDateTime scheduledTime) {
+        if (scheduledTime == null) {
+            return null;
+        }
+
+        for (DoseLog doseLog : doseLogs) {
+            if (doseLog.getMedId() == medicationId
+                    && scheduledTime.equals(doseLog.getScheduledDateTime())) {
+                return doseLog;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the number of dose logs scheduled on a given date whose status indicates the dose was taken.
      *
      * @param date the date to inspect
@@ -383,7 +410,15 @@ public class History {
      * @return the next dose log ID value
      */
     public int getDoseLogId() {
-        return doseLogs.size() + 100;
+        int largestId = 99;
+
+        for (DoseLog doseLog : doseLogs) {
+            if (doseLog.getLogId() > largestId) {
+                largestId = doseLog.getLogId();
+            }
+        }
+
+        return largestId + 1;
     }
 
     /**
