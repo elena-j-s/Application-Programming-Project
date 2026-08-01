@@ -37,3 +37,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Test Data Files ###
+data/*
+!data/.gitkeep

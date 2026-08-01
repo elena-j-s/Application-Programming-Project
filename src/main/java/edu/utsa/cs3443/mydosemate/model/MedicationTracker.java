@@ -260,9 +260,23 @@ public class MedicationTracker {
         int largestId = 0;
 
         for (Medication medication : medications) {
-            if (medication.getMedicationId() > largestId) {
-                largestId = medication.getMedicationId();
-            }
+            largestId = Math.max(
+                    largestId,
+                    medication.getMedicationId()
+            );
+        }
+
+        for (DoseLog doseLog : history.getDoseLogs()) {
+            largestId = Math.max(
+                    largestId,
+                    doseLog.getMedId()
+            );
+        }
+
+        if (largestId == Integer.MAX_VALUE) {
+            throw new IllegalStateException(
+                    "No medication IDs remain"
+            );
         }
 
         return largestId + 1;

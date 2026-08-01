@@ -74,3 +74,8 @@ log_id,med_id,scheduled_time,taken_time,dose_amount,status
 172,5,2026-07-29T07:30,2026-07-29T07:35,20 mg,taken
 173,4,2026-07-29T10:00,,1 tablet,missed
 174,9,2026-07-29T09:00,2026-07-29T09:12,50 mcg,taken
+175,1,2026-07-29T20:00,,500 mg,missed
+176,6,2026-07-29T21:00,,5 mg,missed
+177,7,2026-07-29T12:00,,81 mg,missed
+178,8,2026-07-29T18:00,,10 mg,missed
+179,10,2026-07-29T13:00,,250 mg,missed
