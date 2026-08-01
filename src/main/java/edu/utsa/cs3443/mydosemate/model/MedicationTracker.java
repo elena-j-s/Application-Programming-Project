@@ -918,7 +918,7 @@ public class MedicationTracker {
         Medication medication = getMedicationById(doseLog.getMedId());
 
         String medicationName = medication == null
-                ? "Unknown medication"
+                ? "Deleted/unknown medication"
                 : medication.getName();
 
         String scheduledTime = formatDateTime(doseLog.getScheduledTime());
