@@ -61,30 +61,6 @@ public class SettingsController {
     }
 
     /**
-     * Toggles and persists the user's dark-mode preference.
-     *
-     * @param event the toggle action event
-     */
-    @FXML
-    private void toggleDarkMode(ActionEvent event) {
-        try {
-            userManager.toggleDarkMode();
-        } catch (IOException e) {
-            UiErrorHandler.showError(
-                    "Settings Error",
-                    "The display preference could not be saved.",
-                    e
-            );
-        } catch (RuntimeException e) {
-            UiErrorHandler.showError(
-                    "Settings Error",
-                    "The display preference could not be changed because no valid profile is loaded.",
-                    e
-            );
-        }
-    }
-
-    /**
      * Replaces the current scene with the requested FXML view.
      *
      * @param event the action event used to locate the current stage
