@@ -19,6 +19,10 @@ import java.time.format.DateTimeParseException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/**
+ * Controls the add-medication screen, including input validation, medication
+ * persistence, and navigation to the application's main screens.
+ */
 public class AddMedicationController {
 
     private MedicationTracker medicationTracker;
@@ -80,11 +84,18 @@ public class AddMedicationController {
     @FXML
     private Label statusLabel;
 
+    /** Initializes the medication tracker used to save a new medication. */
     @FXML
     public void initialize() {
         medicationTracker = new MedicationTracker();
     }
 
+    /**
+     * Replaces the current scene with the requested FXML view.
+     *
+     * @param event the action event used to locate the current stage
+     * @param fxml the classpath location of the destination FXML file
+     */
     @FXML
     private void switchScene(ActionEvent event, String fxml) {
         try {
@@ -99,28 +110,63 @@ public class AddMedicationController {
         }
     }
 
+    /**
+     * Opens the home dashboard.
+     *
+     * @param event the navigation action event
+     */
     @FXML
     private void goToDash(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/home-dashboard.fxml");
     }
+
+    /**
+     * Opens the medication list.
+     *
+     * @param event the navigation action event
+     */
     @FXML
     private void goToMedicine(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-medications.fxml");
     }
+
+    /**
+     * Opens the dose-history screen.
+     *
+     * @param event the navigation action event
+     */
     @FXML
     private void goToHistory(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-history.fxml");
     }
+
+    /**
+     * Opens the settings screen.
+     *
+     * @param event the navigation action event
+     */
     @FXML
     private void goToSettings(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/settings.fxml");
     }
 
+    /**
+     * Returns to the medication list.
+     *
+     * @param event the navigation action event
+     */
     @FXML
     private void goBack(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-medications.fxml");
     }
 
+    /**
+     * Validates the form, creates a medication, and saves it through the model.
+     * Validation or persistence failures are displayed to the user without
+     * leaving the form.
+     *
+     * @param event the save-button action event
+     */
     @FXML
     private void saveMedicationClicked(ActionEvent event) {
         try {
@@ -246,6 +292,7 @@ public class AddMedicationController {
         }
     }
 
+    /** Clears all field-level validation messages and the status message. */
     private void clearMessages() {
         setError(medicationNameErrorLabel, "");
         setError(dosageErrorLabel, "");
@@ -261,16 +308,34 @@ public class AddMedicationController {
         }
     }
 
+    /**
+     * Writes a validation message to a label when that label is available.
+     *
+     * @param label the label associated with an input field
+     * @param message the message to display, or {@code null} to clear it
+     */
     private void setError(Label label, String message) {
         if (label != null) {
             label.setText(message == null ? "" : message);
         }
     }
 
+    /**
+     * Reads and trims a text field safely.
+     *
+     * @param field the field to read
+     * @return the trimmed value, or an empty string when unavailable
+     */
     private String textOrEmpty(TextField field) {
         return field == null || field.getText() == null ? "" : field.getText().trim();
     }
 
+    /**
+     * Displays an error dialog.
+     *
+     * @param title the dialog title
+     * @param message the error message to display
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -279,6 +344,12 @@ public class AddMedicationController {
         alert.showAndWait();
     }
 
+    /**
+     * Trims each semicolon-separated schedule time and removes blank entries.
+     *
+     * @param scheduledTimesText the schedule text entered by the user
+     * @return normalized schedule times separated by semicolons
+     */
     private String normalizeScheduledTimes(String scheduledTimesText) {
         if (scheduledTimesText == null || scheduledTimesText.trim().isEmpty()) {
             return "";
@@ -297,6 +368,14 @@ public class AddMedicationController {
         return String.join(";", normalized);
     }
 
+    /**
+     * Verifies that the schedule contains the required number of valid ISO
+     * local times.
+     *
+     * @param scheduledTimes semicolon-separated times in {@code HH:mm} format
+     * @param timesPerDay the expected number of scheduled times
+     * @throws IllegalArgumentException if the count or time format is invalid
+     */
     private void validateScheduledTimes(String scheduledTimes, int timesPerDay) {
         String[] times = scheduledTimes.split(";", -1);
 

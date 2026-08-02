@@ -7,18 +7,17 @@ import edu.utsa.cs3443.mydosemate.model.UserManager;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Controls the history screen by loading persisted dose logs and presenting
+ * them in reverse chronological insertion order.
+ */
 public class MyHistoryController {
 
     @FXML
@@ -34,6 +33,10 @@ public class MyHistoryController {
 
     private History history;
 
+    /**
+     * Loads the date, user greeting, medications, and dose history before
+     * populating the history view.
+     */
     @FXML
     private void initialize() {
         LocalDate today = LocalDate.now();
@@ -55,7 +58,17 @@ public class MyHistoryController {
                 );
             }
         } catch (IOException exception) {
-            exception.printStackTrace();
+            UiErrorHandler.showError(
+                    "Profile Error",
+                    "Your greeting could not be loaded, but history is still available.",
+                    exception
+            );
+        } catch (RuntimeException exception) {
+            UiErrorHandler.showError(
+                    "Profile Error",
+                    "Your greeting could not be loaded, but history is still available.",
+                    exception
+            );
         }
 
         try {
@@ -65,23 +78,39 @@ public class MyHistoryController {
             history.loadDoseLogs();
             populateHistory();
         } catch (IOException exception) {
-            exception.printStackTrace();
-
-            Label errorLabel = new Label(
-                    "Unable to load dose history:\n"
-                            + exception.getMessage()
-            );
-
-            errorLabel.setWrapText(true);
-            errorLabel.setStyle(
-                    "-fx-text-fill: #C62828;"
-                            + "-fx-font-size: 14px;"
-            );
-
-            historyContainer.getChildren().setAll(errorLabel);
+            showHistoryError(exception);
+        } catch (RuntimeException exception) {
+            showHistoryError(exception);
         }
     }
 
+    /**
+     * Replaces the history contents with an error message and reports the
+     * underlying failure without closing the screen.
+     *
+     * @param exception the history-loading failure
+     */
+    private void showHistoryError(Throwable exception) {
+        String detail = exception == null || exception.getMessage() == null
+                ? "The saved history could not be read."
+                : exception.getMessage();
+        Label errorLabel = new Label("Unable to load dose history:\n" + detail);
+
+        errorLabel.setWrapText(true);
+        errorLabel.setStyle(
+                "-fx-text-fill: #C62828;"
+                        + "-fx-font-size: 14px;"
+        );
+
+        historyContainer.getChildren().setAll(errorLabel);
+        UiErrorHandler.showError(
+                "History Error",
+                "Dose history could not be loaded. Please check the data files.",
+                exception
+        );
+    }
+
+    /** Builds the visible history list from the currently loaded dose logs. */
     private void populateHistory() {
         historyContainer.getChildren().clear();
 
@@ -116,32 +145,64 @@ public class MyHistoryController {
         }
     }
 
+    /**
+     * Replaces the current scene with the requested FXML view.
+     *
+     * @param event the action event used to locate the current stage
+     * @param fxml the classpath location of the destination FXML file
+     */
     @FXML
-    private void switchScene(ActionEvent event, String fxml) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource(fxml));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
+    private void switchScene(ActionEvent event, String fxml) {
+        UiErrorHandler.switchScene(event, getClass(), fxml);
     }
 
+    /**
+     * Opens the home dashboard.
+     *
+     * @param event the navigation action event
+     */
     @FXML
-    private void goToDash(ActionEvent event) throws IOException {
+    private void goToDash(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/home-dashboard.fxml");
     }
+
+    /**
+     * Opens the medication list.
+     *
+     * @param event the navigation action event
+     */
     @FXML
-    private void goToMedicine(ActionEvent event) throws IOException {
+    private void goToMedicine(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-medications.fxml");
     }
+
+    /**
+     * Reloads the dose-history screen.
+     *
+     * @param event the navigation action event
+     */
     @FXML
-    private void goToHistory(ActionEvent event) throws IOException{
+    private void goToHistory(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-history.fxml");
     }
+
+    /**
+     * Opens the add-medication form.
+     *
+     * @param event the navigation action event
+     */
     @FXML
-    private void addMedication(ActionEvent event) throws IOException{
+    private void addMedication(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/add-medication.fxml");
     }
+
+    /**
+     * Opens the settings screen.
+     *
+     * @param event the navigation action event
+     */
     @FXML
-    private void goToSettings(ActionEvent event) throws IOException{
+    private void goToSettings(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/settings.fxml");
     }
 

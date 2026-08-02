@@ -20,6 +20,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.time.LocalTime;
 
+/**
+ * Controls the medication-detail screen, allowing an existing medication to
+ * be viewed, validated, updated, or deleted.
+ */
 public class MedicationCardController {
 
     private MedicationTracker medicationTracker;
@@ -91,17 +95,29 @@ public class MedicationCardController {
     @FXML
     private Button deleteButton;
 
+    /** Initializes the medication model and clears any stale form messages. */
     @FXML
     public void initialize() {
         medicationTracker = new MedicationTracker();
         clearMessages();
     }
 
+    /**
+     * Supplies the medication represented by this detail screen and populates
+     * the editable fields.
+     *
+     * @param medication the medication to display
+     */
     public void setMedication(Medication medication) {
         this.medication = medication;
         populateFields();
     }
 
+    /**
+     * Validates the edited values and persists the updated medication.
+     *
+     * @param event the save-button action event
+     */
     @FXML
     private void saveMedicationClicked(ActionEvent event) {
         try {
@@ -237,6 +253,11 @@ public class MedicationCardController {
         }
     }
 
+    /**
+     * Confirms and permanently removes the displayed medication.
+     *
+     * @param event the delete-button action event
+     */
     @FXML
     private void deleteMedicationClicked(ActionEvent event) {
         if (medication == null) {
@@ -267,6 +288,11 @@ public class MedicationCardController {
         }
     }
 
+    /**
+     * Returns to the medication list, displaying an alert if navigation fails.
+     *
+     * @param event the navigation action event
+     */
     @FXML
     private void goBack(ActionEvent event) {
         try {
@@ -281,26 +307,52 @@ public class MedicationCardController {
         }
     }
 
+    /**
+     * Opens the home dashboard.
+     *
+     * @param event the navigation action event
+     */
     @FXML
     private void goToDash(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/home-dashboard.fxml");
     }
 
+    /**
+     * Opens the medication list.
+     *
+     * @param event the navigation action event
+     */
     @FXML
     private void goToMedicine(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-medications.fxml");
     }
 
+    /**
+     * Opens the dose-history screen.
+     *
+     * @param event the navigation action event
+     */
     @FXML
     private void goToHistory(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-history.fxml");
     }
 
+    /**
+     * Opens the settings screen.
+     *
+     * @param event the navigation action event
+     */
     @FXML
     private void goToSettings(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/settings.fxml");
     }
 
+    /**
+     * Replaces the current scene with the requested FXML view.
+     *
+     * @param event the action event used to locate the current stage
+     * @param fxml the classpath location of the destination FXML file
+     */
     private void switchScene(ActionEvent event, String fxml) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxml));
@@ -314,6 +366,7 @@ public class MedicationCardController {
         }
     }
 
+    /** Copies the current medication values into the detail form. */
     private void populateFields() {
         if (medication == null) {
             return;
@@ -352,6 +405,7 @@ public class MedicationCardController {
         }
     }
 
+    /** Clears all field-level validation messages and the status message. */
     private void clearMessages() {
         setError(nameErrorLabel, "");
         setError(dosageErrorLabel, "");
@@ -367,12 +421,24 @@ public class MedicationCardController {
         }
     }
 
+    /**
+     * Writes a validation message to a label when that label is available.
+     *
+     * @param label the label associated with an input field
+     * @param message the message to display, or {@code null} to clear it
+     */
     private void setError(Label label, String message) {
         if (label != null) {
             label.setText(message == null ? "" : message);
         }
     }
 
+    /**
+     * Displays an error dialog.
+     *
+     * @param title the dialog title
+     * @param message the error message to display
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -381,10 +447,22 @@ public class MedicationCardController {
         alert.showAndWait();
     }
 
+    /**
+     * Reads and trims a text field safely.
+     *
+     * @param field the field to read
+     * @return the trimmed value, or an empty string when unavailable
+     */
     private String textOrEmpty(TextField field) {
         return field == null || field.getText() == null ? "" : field.getText().trim();
     }
 
+    /**
+     * Trims each semicolon-separated schedule time and removes blank entries.
+     *
+     * @param scheduledTimesText the schedule text entered by the user
+     * @return normalized schedule times separated by semicolons
+     */
     private String normalizeScheduledTimes(String scheduledTimesText) {
         if (scheduledTimesText == null || scheduledTimesText.trim().isEmpty()) {
             return "";
@@ -409,6 +487,14 @@ public class MedicationCardController {
         return builder.toString();
     }
 
+    /**
+     * Verifies that the schedule contains the required number of valid ISO
+     * local times.
+     *
+     * @param scheduledTimes semicolon-separated times in {@code HH:mm} format
+     * @param timesPerDay the expected number of scheduled times
+     * @throws IllegalArgumentException if the count or time format is invalid
+     */
     private void validateScheduledTimes(String scheduledTimes, int timesPerDay) {
         String[] times = scheduledTimes.split(";", -1);
 
@@ -425,6 +511,12 @@ public class MedicationCardController {
         }
     }
 
+    /**
+     * Formats a dosage without a decimal suffix when it is a whole number.
+     *
+     * @param dosage the dosage value
+     * @return the compact dosage text
+     */
     private String formatDosageAmount(double dosage) {
         if (dosage == Math.rint(dosage)) {
             return String.valueOf((long) dosage);

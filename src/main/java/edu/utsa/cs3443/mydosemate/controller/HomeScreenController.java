@@ -5,12 +5,8 @@ import edu.utsa.cs3443.mydosemate.model.ScheduledDose;
 import edu.utsa.cs3443.mydosemate.model.UserManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -19,13 +15,16 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Controls the home dashboard by presenting today's scheduled doses, handling
+ * dose-taking actions, and displaying the user's daily progress.
+ */
 public class HomeScreenController {
 
     @FXML
@@ -54,6 +53,10 @@ public class HomeScreenController {
 
     private MedicationTracker medicationTracker;
 
+    /**
+     * Loads the current date and user greeting, initializes the medication
+     * model, and renders the dashboard.
+     */
     @FXML
     public void initialize() {
         // Current Date
@@ -74,12 +77,31 @@ public class HomeScreenController {
 
         } catch (IOException e) {
             greetingLabel.setText("Hello!");
-            e.printStackTrace();
+            UiErrorHandler.showError(
+                    "Profile Error",
+                    "Your greeting could not be loaded, but the dashboard is still available.",
+                    e
+            );
+        } catch (RuntimeException e) {
+            greetingLabel.setText("Hello!");
+            UiErrorHandler.showError(
+                    "Profile Error",
+                    "Your greeting could not be loaded, but the dashboard is still available.",
+                    e
+            );
         }
 
-        medicationTracker = new MedicationTracker();
-
-        refreshDashboard();
+        try {
+            medicationTracker = new MedicationTracker();
+            refreshDashboard();
+        } catch (RuntimeException exception) {
+            doseMessageLabel.setText("The dashboard could not be loaded.");
+            UiErrorHandler.showError(
+                    "Dashboard Error",
+                    "Medication information could not be loaded. Please restart the application.",
+                    exception
+            );
+        }
     }
 
     /** Refreshes both the daily dose list and progress summary. */
@@ -112,11 +134,28 @@ public class HomeScreenController {
         } catch (IOException exception) {
             doseMessageLabel.setText(
                     "Today's doses could not be loaded.");
-            exception.printStackTrace();
+            UiErrorHandler.showError(
+                    "Dose Error",
+                    "Today's doses could not be loaded. Please try again.",
+                    exception
+            );
+        } catch (RuntimeException exception) {
+            doseMessageLabel.setText(
+                    "Today's doses could not be loaded.");
+            UiErrorHandler.showError(
+                    "Dose Error",
+                    "Today's doses could not be displayed. Please check the medication data.",
+                    exception
+            );
         }
     }
 
-    /** Creates the visual row and action button for one scheduled dose. */
+    /**
+     * Creates the visual row and action button for one scheduled dose.
+     *
+     * @param dose the scheduled dose to present
+     * @return a configured dashboard row
+     */
     private HBox createDoseRow(final ScheduledDose dose) {
         DateTimeFormatter timeFormatter =
                 DateTimeFormatter.ofPattern("h:mm a");
@@ -163,7 +202,11 @@ public class HomeScreenController {
         return row;
     }
 
-    /** Marks the selected schedule slot as taken and refreshes the screen. */
+    /**
+     * Marks the selected schedule slot as taken and refreshes the screen.
+     *
+     * @param dose the scheduled dose selected by the user
+     */
     private void markDoseTaken(ScheduledDose dose) {
         try {
             boolean recorded = medicationTracker.takeScheduledDose(
@@ -188,10 +231,28 @@ public class HomeScreenController {
         } catch (IOException exception) {
             doseMessageLabel.setText(
                     "The dose could not be saved. Please try again.");
-            exception.printStackTrace();
+            UiErrorHandler.showError(
+                    "Unable to Save Dose",
+                    "The dose could not be saved. Please try again.",
+                    exception
+            );
+        } catch (RuntimeException exception) {
+            doseMessageLabel.setText(
+                    "The dose could not be saved. Please try again.");
+            UiErrorHandler.showError(
+                    "Unable to Save Dose",
+                    "The dose could not be saved. Please try again.",
+                    exception
+            );
         }
     }
 
+    /**
+     * Builds user-facing text for a scheduled dose's current status.
+     *
+     * @param dose the scheduled dose whose status is displayed
+     * @return status text including the taken time when available
+     */
     private String formatStatus(ScheduledDose dose) {
         if (dose.getStatus() == ScheduledDose.Status.TAKEN
                 && dose.getTakenTime() != null) {
@@ -206,6 +267,12 @@ public class HomeScreenController {
         return "Upcoming";
     }
 
+    /**
+     * Selects the text styling associated with a dose status.
+     *
+     * @param status the dose status to style
+     * @return a JavaFX inline style string
+     */
     private String statusStyle(ScheduledDose.Status status) {
         String color = "#5B85EB";
 
@@ -219,6 +286,12 @@ public class HomeScreenController {
                 + "-fx-text-fill: " + color + ";";
     }
 
+    /**
+     * Formats a dosage without a decimal suffix when it is a whole number.
+     *
+     * @param dosage the dosage value
+     * @return the compact dosage text
+     */
     private String formatDosage(double dosage) {
         if (dosage == Math.rint(dosage)) {
             return String.valueOf((long) dosage);
@@ -227,46 +300,90 @@ public class HomeScreenController {
         return String.valueOf(dosage);
     }
 
+    /** Updates the progress indicator and daily dose-count labels. */
     private void updateProgress() {
-        int[] report = medicationTracker.getProgressReport();
-        int takenDoses = report[0];
-        int missedDoses = report[1];
-        int upcomingDoses = report[2];
-        int progressPercent = report[3];
+        try {
+            int[] report = medicationTracker.getProgressReport();
+            int takenDoses = report[0];
+            int missedDoses = report[1];
+            int upcomingDoses = report[2];
+            int progressPercent = report[3];
 
-        progressIndicator.setProgress(progressPercent / 100.0);
+            progressIndicator.setProgress(progressPercent / 100.0);
 
-        takenDataLabel.setText(String.valueOf(takenDoses));
-        missedDataLabel.setText(String.valueOf(missedDoses));
-        upcomingDataLabel.setText(String.valueOf(upcomingDoses));
+            takenDataLabel.setText(String.valueOf(takenDoses));
+            missedDataLabel.setText(String.valueOf(missedDoses));
+            upcomingDataLabel.setText(String.valueOf(upcomingDoses));
+        } catch (RuntimeException exception) {
+            progressIndicator.setProgress(0.0);
+            takenDataLabel.setText("0");
+            missedDataLabel.setText("0");
+            upcomingDataLabel.setText("0");
+            UiErrorHandler.showError(
+                    "Progress Error",
+                    "Today's progress could not be calculated.",
+                    exception
+            );
+        }
     }
 
-    private void switchScene(ActionEvent event, String fxml) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource(fxml));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
+    /**
+     * Replaces the current scene with the requested FXML view.
+     *
+     * @param event the action event used to locate the current stage
+     * @param fxml the classpath location of the destination FXML file
+     */
+    private void switchScene(ActionEvent event, String fxml) {
+        UiErrorHandler.switchScene(event, getClass(), fxml);
     }
 
+    /**
+     * Opens the home dashboard.
+     *
+     * @param event the navigation action event
+     */
     @FXML
-    private void goToDash(ActionEvent event) throws IOException {
+    private void goToDash(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/home-dashboard.fxml");
     }
+
+    /**
+     * Opens the medication list.
+     *
+     * @param event the navigation action event
+     */
     @FXML
-    private void goToMedicine(ActionEvent event) throws IOException {
+    private void goToMedicine(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-medications.fxml");
     }
+
+    /**
+     * Opens the dose-history screen.
+     *
+     * @param event the navigation action event
+     */
     @FXML
-    private void goToHistory(ActionEvent event) throws IOException{
+    private void goToHistory(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/my-history.fxml");
     }
+
+    /**
+     * Opens the add-medication form.
+     *
+     * @param event the navigation action event
+     */
     @FXML
-    private void addMedication(ActionEvent event) throws IOException{
+    private void addMedication(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/add-medication.fxml");
     }
 
+    /**
+     * Opens the settings screen.
+     *
+     * @param event the navigation action event
+     */
     @FXML
-    private void goToSettings(ActionEvent event) throws IOException{
+    private void goToSettings(ActionEvent event) {
         switchScene(event, "/edu/utsa/cs3443/mydosemate/view/settings.fxml");
     }
 

@@ -405,7 +405,7 @@ public class History {
     }
 
     /**
-     * Generates a new dose log ID based on the current number of stored logs.
+     * Generates a dose log ID one greater than the largest stored log ID.
      *
      * @return the next dose log ID value
      */

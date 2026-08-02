@@ -252,9 +252,12 @@ public class MedicationTracker {
     }
 
     /**
-     * Generates the next available medication ID.
+     * Generates an ID greater than every active medication ID and every
+     * medication ID retained in dose history, preventing deleted IDs from
+     * being reused while historical logs still reference them.
      *
-     * @return an ID value one greater than the current highest medication ID
+     * @return an ID value one greater than the highest current or historical ID
+     * @throws IllegalStateException if the integer ID range has been exhausted
      */
     public int generateNextMedicationId() {
         int largestId = 0;
@@ -795,17 +798,23 @@ public class MedicationTracker {
         }
     }
 
-    /** Formats a medication's configured dose for display and history. */
+    /**
+     * Formats a medication's configured dose for display and history.
+     *
+     * @param medication the medication whose dose is formatted
+     * @return the dosage followed by its unit
+     */
     private String formatDoseAmount(Medication medication) {
         return formatDosageAmount(medication.getDosage())
                 + " " + medication.getUnit();
     }
 
     /**
-     * Returns today's progress report as an array of doubles where
+     * Returns today's progress report as an array of integers where
      * the first element is the number of doses taken, the second is the number of doses missed,
      * the third is the number of doses upcoming, and the fourth is the progress as a percentage.
-     * @return the progress report
+     *
+     * @return the taken, missed, upcoming, and percentage values in that order
      */
     public int[] getProgressReport() {
         LocalDate today = LocalDate.now();
