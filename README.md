@@ -39,76 +39,9 @@ The project follows the Model-View-Controller (MVC) pattern:
 
 ### UML Diagram
 
-```mermaid
-classDiagram
-    direction LR
+The UML diagram is located inside `UML/`.
 
-    class FXMLViews {
-        <<View>>
-        welcome.fxml
-        home-dashboard.fxml
-        my-medications.fxml
-        my-history.fxml
-        settings.fxml
-    }
-
-    class Controllers {
-        <<Controller>>
-        WelcomeController
-        HomeScreenController
-        MyMedicationsController
-        MyHistoryController
-        SettingsController
-    }
-
-    class MedicationTracker {
-        <<Model>>
-        +getMedications()
-        +addMedication()
-        +updateMedication()
-        +removeMedication()
-        +takeScheduledDose()
-    }
-
-    class Medication {
-        <<Model>>
-    }
-
-    class History {
-        <<Model>>
-        +getDoseLogs()
-        +appendDoseLog()
-    }
-
-    class DoseLog {
-        <<Model>>
-    }
-
-    class ScheduledDose {
-        <<Model>>
-    }
-
-    class UserManager {
-        <<Model>>
-        +loadUser()
-        +updateUserProfile()
-    }
-
-    class User {
-        <<Model>>
-    }
-
-    FXMLViews --> Controllers : sends user actions
-    Controllers --> FXMLViews : updates controls
-    Controllers --> MedicationTracker : manages medication data
-    Controllers --> UserManager : manages profile data
-    MedicationTracker "1" o-- "*" Medication
-    MedicationTracker "1" *-- "1" History
-    MedicationTracker --> ScheduledDose : creates
-    History "1" o-- "*" DoseLog
-    DoseLog --> Medication : references by medication ID
-    UserManager "1" o-- "0..1" User
-```
+![MyDoseMate UML diagram](UML/MyDosemate_UML.png)
 
 ## Requirements
 
