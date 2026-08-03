@@ -71,7 +71,7 @@
                      </VBox.margin>
                      </Label>
 
-                     <TextField fx:id="firstNameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" promptText="First Name">
+                     <TextField fx:id="firstNameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="500.0" promptText="First Name" style="-fx-background-radius: 20;">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin></TextField>
@@ -95,7 +95,7 @@
                      </VBox.margin>
                      </Label>
 
-                     <TextField fx:id="lastNameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" promptText="Last Name">
+                     <TextField fx:id="lastNameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="500.0" promptText="Last Name" style="-fx-background-radius: 20;">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin></TextField>
@@ -119,7 +119,7 @@
                      </VBox.margin>
                      </Label>
 
-                     <TextField fx:id="emailField" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="500.0" promptText="Email">
+                     <TextField fx:id="emailField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="500.0" promptText="Email" style="-fx-background-radius: 20;">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin></TextField>
@@ -143,7 +143,7 @@
                      </VBox.margin>
                      </Label>
 
-                     <TextField fx:id="phoneField" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="500.0" promptText="Phone">
+                     <TextField fx:id="phoneField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="500.0" promptText="Phone" style="-fx-background-radius: 20;">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin></TextField>
