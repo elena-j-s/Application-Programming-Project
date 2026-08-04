@@ -135,10 +135,6 @@
             </StackPane>
          </center>
       </BorderPane>
-      <Button layoutX="465.0" layoutY="650.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addMedication" prefHeight="59.0" prefWidth="63.0" styleClass="primary-button" stylesheets="@style.css" text="+">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="50.0" />
-         </font>
-      </Button>
+      <Button layoutX="465.0" layoutY="650.0" maxHeight="59.0" maxWidth="63.0" minHeight="59.0" minWidth="63.0" mnemonicParsing="false" onAction="#addMedication" prefHeight="59.0" prefWidth="63.0" style="-fx-font-size: 32px; -fx-padding: 0" styleClass="primary-button" stylesheets="@style.css" text="+" textOverrun="CLIP" />
    </children>
 </AnchorPane>

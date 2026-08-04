@@ -156,11 +156,7 @@
                   </ScrollPane>
 
                   <!-- Add medication button -->
-                  <Button mnemonicParsing="false" onAction="#addMedication" prefHeight="59.0" prefWidth="63.0" styleClass="primary-button" stylesheets="@style.css" text="+" StackPane.alignment="BOTTOM_RIGHT">
-
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="50.0" />
-                     </font>
+                  <Button mnemonicParsing="false" onAction="#addMedication" prefHeight="59.0" prefWidth="63.0" maxHeight="59.0" maxWidth="63.0" minHeight="59.0" minWidth="63.0" style="-fx-font-size: 32px; -fx-padding: 0" styleClass="primary-button" stylesheets="@style.css" text="+" textOverrun="CLIP" StackPane.alignment="BOTTOM_RIGHT">
 
                      <StackPane.margin>
                         <Insets bottom="25.0" right="22.0" />
