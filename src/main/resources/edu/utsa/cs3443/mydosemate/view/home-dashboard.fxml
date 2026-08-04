@@ -201,7 +201,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addMedication" prefHeight="59.0" prefWidth="63.0" styleClass="primary-button" stylesheets="@style.css" text="+">
+                  <Button maxHeight="59.0" maxWidth="63.0" minHeight="59.0" minWidth="63.0" mnemonicParsing="false" onAction="#addMedication" prefHeight="59.0" prefWidth="63.0" styleClass="primary-button" stylesheets="@style.css" text="+" textOverrun="CLIP">
                      <VBox.margin>
                         <Insets left="480.0" top="10.0" />
                      </VBox.margin>
